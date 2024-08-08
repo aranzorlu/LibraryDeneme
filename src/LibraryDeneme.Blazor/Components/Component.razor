@@ -1,0 +1,12 @@
+﻿@using Volo.Abp.DependencyInjection
+
+@using Volo.Abp.AspNetCore.Components.Web.BasicTheme.Themes.Basic
+
+
+
+@inherits Branding
+@attribute [ExposeServices(typeof(Branding))]
+@attribute [Dependency(ReplaceServices = true)]
+<a href="/">
+    <img src="Library1.jpg" width="80" height="80" />
+</a>

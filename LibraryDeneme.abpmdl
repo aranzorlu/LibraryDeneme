@@ -1,0 +1,85 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.Account": {
+      "version": "8.2.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "8.2.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.Identity": {
+      "version": "8.2.0",
+      "isInstalled": true
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "8.2.0",
+      "isInstalled": true
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "LibraryDeneme.Application": {
+      "path": "src/LibraryDeneme.Application/LibraryDeneme.Application.abppkg",
+      "folder": "src"
+    },
+    "LibraryDeneme.Application.Tests": {
+      "path": "test/LibraryDeneme.Application.Tests/LibraryDeneme.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "LibraryDeneme.Domain.Shared": {
+      "path": "src/LibraryDeneme.Domain.Shared/LibraryDeneme.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "LibraryDeneme.Application.Contracts": {
+      "path": "src/LibraryDeneme.Application.Contracts/LibraryDeneme.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "LibraryDeneme.HttpApi": {
+      "path": "src/LibraryDeneme.HttpApi/LibraryDeneme.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "LibraryDeneme.HttpApi.Client": {
+      "path": "src/LibraryDeneme.HttpApi.Client/LibraryDeneme.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "LibraryDeneme.EntityFrameworkCore.Tests": {
+      "path": "test/LibraryDeneme.EntityFrameworkCore.Tests/LibraryDeneme.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "LibraryDeneme.EntityFrameworkCore": {
+      "path": "src/LibraryDeneme.EntityFrameworkCore/LibraryDeneme.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "LibraryDeneme.TestBase": {
+      "path": "test/LibraryDeneme.TestBase/LibraryDeneme.TestBase.abppkg",
+      "folder": "test"
+    },
+    "LibraryDeneme.Domain.Tests": {
+      "path": "test/LibraryDeneme.Domain.Tests/LibraryDeneme.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "LibraryDeneme.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/LibraryDeneme.HttpApi.Client.ConsoleTestApp/LibraryDeneme.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "LibraryDeneme.DbMigrator": {
+      "path": "src/LibraryDeneme.DbMigrator/LibraryDeneme.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "LibraryDeneme.Blazor": {
+      "path": "src/LibraryDeneme.Blazor/LibraryDeneme.Blazor.abppkg",
+      "folder": "src"
+    },
+    "LibraryDeneme.Domain": {
+      "path": "src/LibraryDeneme.Domain/LibraryDeneme.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}
