@@ -27,9 +27,6 @@
        
     </CardHeader>
     <CardBody>
-       
-          
-
         <div class=" wrapper">
              <div class="input-container">   
                 <input placeholder="Search..." type="text" name="text" class="input" @bind="searchText" @oninput="@(async (e) => await SearchBooksAsync(e))" />
@@ -38,8 +35,6 @@
             </span>
           </div>
           </div>
-         
-
             
         <DataGrid TItem="BookDto"
                   Data="filteredBooks"

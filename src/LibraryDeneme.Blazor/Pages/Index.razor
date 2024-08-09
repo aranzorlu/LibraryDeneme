@@ -1,23 +1,41 @@
-﻿@page "/"
-
-@inherits LibraryDenemeComponentBase
-
+﻿
+@using Volo.Abp.Identity
+@page "/"
 <style>
-    body {
+    body{
         color : white
 
     }
 </style>
-<div class="row entry-row">
-    <div class="col-auto">
-        <h1 class="content-header-title">Welcome to LibraryDeneme!</h1>
-        
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="display-4">Hoş Geldiniz!</h1>
+            <p class="lead">LibraryApp ile kütüphanenizi kolayca yönetin.</p>
+            <p>Kitapları, çalışanları ve daha fazlasını yönetmek için menüden ilgili bölüme geçiş yapabilirsiniz.</p>
+            
+        </div>
     </div>
- </div>
-    
 
-
-
-
-    
-
+    <div class="row mt-5">
+        <div class="col-md-4 text-center">
+            <i class="fas fa-book fa-5x text-primary"></i>
+            <h2>Kitaplar</h2>
+            <p>Kitap ekleyin, düzenleyin ve kategorize edin.</p>
+            <a class="btn btn-outline-primary" href="/books">Daha Fazla</a>
+        </div>
+        <div class="col-md-4 text-center">
+            <i class="fas fa-users fa-5x text-primary"></i>
+            <h2>Çalışanlar</h2>
+            <p>Kütüphane personelinizi yönetin.</p>
+            <a class="btn btn-outline-primary" href="/identity/users">Daha Fazla</a>
+        </div>
+        <div class="col-md-4 text-center">
+            <i class="fas fa-building fa-5x text-primary"></i>
+            <h2>Yapılar</h2>
+            <p>Kütüphane binalarını ve odalarını düzenleyin.</p>
+            <a class="btn btn-outline-primary" href="/buildings">Daha Fazla</a>
+        </div>
+    </div>
+</div>
