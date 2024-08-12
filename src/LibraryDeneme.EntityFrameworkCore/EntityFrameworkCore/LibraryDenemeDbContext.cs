@@ -16,6 +16,7 @@ using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using LibraryDeneme.Authors;
+using LibraryDeneme.Shelfs;
 
 namespace LibraryDeneme.EntityFrameworkCore;
 
@@ -32,6 +33,8 @@ public class LibraryDenemeDbContext :
     public DbSet<Book> Books { get; set; }
 
     public DbSet<Author> Authors { get; set; }
+
+    public DbSet<Shelf> Shelfs { get; set; }
 
     #region Entities from the modules
 
@@ -106,6 +109,13 @@ public class LibraryDenemeDbContext :
                 .HasMaxLength(AuthorConsts.MaxNameLength);
 
             b.HasIndex(x => x.Name);
+        });
+        builder.Entity<Shelf>(b =>
+        {
+            b.ToTable(LibraryDenemeConsts.DbTablePrefix + "Shelfs",
+                LibraryDenemeConsts.DbSchema);
+            b.ConfigureByConvention();
+            b.Property(x => x.ShelfName).IsRequired().HasMaxLength(128);
         });
     }
     }
