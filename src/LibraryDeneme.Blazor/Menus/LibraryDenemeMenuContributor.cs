@@ -81,7 +81,11 @@ public class LibraryDenemeMenuContributor : IMenuContributor
                 url: "/authors")
                 );
         }
-       
-       
+        context.Menu.AddItem(new ApplicationMenuItem(
+                "BookStore.Shelfs",
+                l["Menu:Shelfs"],
+                url: "/shelfs")
+                );
+
     }
 }

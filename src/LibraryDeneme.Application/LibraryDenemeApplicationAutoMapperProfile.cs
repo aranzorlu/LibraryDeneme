@@ -1,6 +1,7 @@
 using AutoMapper;
 using LibraryDeneme.Authors;
 using LibraryDeneme.Books;
+using LibraryDeneme.Shelfs;
 
 namespace LibraryDeneme;
 
@@ -12,6 +13,8 @@ public class LibraryDenemeApplicationAutoMapperProfile : Profile
         CreateMap<CreateUpdateBookDto, Book>();
         CreateMap<Author, AuthorDto>();
         CreateMap<Author, AuthorLookupDto>();
+        CreateMap<Shelf, ShelfDto>();
+        CreateMap<CreateUpdateShelfDto, Shelf>();    
         
 
         /* You can configure your AutoMapper mapping configuration here.

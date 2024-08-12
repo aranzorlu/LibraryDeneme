@@ -25,6 +25,12 @@ public class LibraryDenemePermissionDefinitionProvider : PermissionDefinitionPro
         authorsPermission.AddChild(
             LibraryDenemePermissions.Authors.Delete, L("Permission:Authors.Delete"));
 
+        
+        var shelfsPermission = myGroup.AddPermission(LibraryDenemePermissions.Shelfs.Default, L("Permission:Shelfs"));
+        shelfsPermission.AddChild(LibraryDenemePermissions.Shelfs.Create, L("Permission:Shelfs.Create"));
+        shelfsPermission.AddChild(LibraryDenemePermissions.Shelfs.Edit, L("Permission:Shelfs.Edit"));
+        shelfsPermission.AddChild(LibraryDenemePermissions.Shelfs.Delete, L("Permission:Shelfs.Delete"));
+
         //Define your own permissions here. Example:
         //myGroup.AddPermission(LibraryDenemePermissions.MyPermission1, L("Permission:MyPermission1"));
     }
