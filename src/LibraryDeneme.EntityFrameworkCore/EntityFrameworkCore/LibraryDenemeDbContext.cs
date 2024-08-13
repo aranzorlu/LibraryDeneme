@@ -94,6 +94,7 @@ public class LibraryDenemeDbContext :
             b.ConfigureByConvention(); //auto configure for the base class props
             b.Property(x => x.Name).IsRequired().HasMaxLength(128);
             b.HasOne<Author>().WithMany().HasForeignKey(x => x.AuthorId).IsRequired();
+            b.HasOne<Shelf>().WithMany().HasForeignKey(x => x.ShelfId).IsRequired();
 
         });
 
@@ -115,7 +116,8 @@ public class LibraryDenemeDbContext :
             b.ToTable(LibraryDenemeConsts.DbTablePrefix + "Shelfs",
                 LibraryDenemeConsts.DbSchema);
             b.ConfigureByConvention();
-            b.Property(x => x.ShelfName).IsRequired().HasMaxLength(128);
+            b.Property(x => x.ShelfName).IsRequired().HasMaxLength(ShelfConsts.MaxShelfNameLength);
+            b.HasIndex(x => x.ShelfName);
         });
     }
     }

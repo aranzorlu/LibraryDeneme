@@ -13,7 +13,7 @@ using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using AutoMapper.Internal.Mappers;
 using Volo.Abp.ObjectMapping;
-
+using LibraryDeneme.Shelfs;
 namespace LibraryDeneme.Books;
 
 [Authorize(LibraryDenemePermissions.Books.Default)]
@@ -27,12 +27,15 @@ public class BookAppService :
     IBookAppService //implement the IBookAppService
 {
     private readonly IAuthorRepository _authorRepository;
+    private readonly IShelfRepository _shelfRepository;
 
     public BookAppService(
         IRepository<Book, Guid> repository,
+        IShelfRepository shelfRepository,
         IAuthorRepository authorRepository)
         : base(repository)
     {
+        _shelfRepository = shelfRepository;
         _authorRepository = authorRepository;
         GetPolicyName = LibraryDenemePermissions.Books.Default;
         GetListPolicyName = LibraryDenemePermissions.Books.Default;
@@ -46,13 +49,14 @@ public class BookAppService :
         //Get the IQueryable<Book> from the repository
         var queryable = await Repository.GetQueryableAsync();
 
-        //Prepare a query to join books and authors
+        //Prepare a query to join books, authors, and shelves
         var query = from book in queryable
                     join author in await _authorRepository.GetQueryableAsync() on book.AuthorId equals author.Id
+                    join shelf in await _shelfRepository.GetQueryableAsync() on book.ShelfId equals shelf.Id
                     where book.Id == id
-                    select new { book, author };
+                    select new { book, author, shelf };
 
-        //Execute the query and get the book with author
+        //Execute the query and get the book with author and shelf
         var queryResult = await AsyncExecuter.FirstOrDefaultAsync(query);
         if (queryResult == null)
         {
@@ -61,18 +65,21 @@ public class BookAppService :
 
         var bookDto = ObjectMapper.Map<Book, BookDto>(queryResult.book);
         bookDto.AuthorName = queryResult.author.Name;
+        bookDto.ShelfName = queryResult.shelf.ShelfName; // Shelf adını BookDto'ya ekliyoruz
         return bookDto;
     }
+
 
     public override async Task<PagedResultDto<BookDto>> GetListAsync(PagedAndSortedResultRequestDto input)
     {
         //Get the IQueryable<Book> from the repository
         var queryable = await Repository.GetQueryableAsync();
 
-        //Prepare a query to join books and authors
+        //Prepare a query to join books, authors, and shelves
         var query = from book in queryable
                     join author in await _authorRepository.GetQueryableAsync() on book.AuthorId equals author.Id
-                    select new { book, author };
+                    join shelf in await _shelfRepository.GetQueryableAsync() on book.ShelfId equals shelf.Id
+                    select new { book, author, shelf };
 
         //Paging
         query = query
@@ -88,6 +95,7 @@ public class BookAppService :
         {
             var bookDto = ObjectMapper.Map<Book, BookDto>(x.book);
             bookDto.AuthorName = x.author.Name;
+            bookDto.ShelfName = x.shelf.ShelfName; // Shelf adını BookDto'ya ekliyoruz
             return bookDto;
         }).ToList();
 
@@ -124,8 +132,26 @@ public class BookAppService :
                 StringComparison.OrdinalIgnoreCase
             );
         }
+        if (sorting.Contains("shelfName", StringComparison.OrdinalIgnoreCase))
+        {
+            return sorting.Replace(
+                "shelfName",
+                "shelf.ShelfName",
+                StringComparison.OrdinalIgnoreCase
+            );
+        }
 
         return $"book.{sorting}";
+    }
+    public async Task<ListResultDto<ShelfLookupDto>> GetShelfLookupAsync()
+    {
+        // Shelf'leri alıyoruz
+        var shelfs = await _shelfRepository.GetListAsync();
+
+        // Shelf'leri ShelfLookupDto'ya map ediyoruz ve döndürüyoruz
+        return new ListResultDto<ShelfLookupDto>(
+            ObjectMapper.Map<List<Shelf>, List<ShelfLookupDto>>(shelfs)
+        );
     }
 }
 

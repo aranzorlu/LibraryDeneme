@@ -14,7 +14,8 @@ public class LibraryDenemeApplicationAutoMapperProfile : Profile
         CreateMap<Author, AuthorDto>();
         CreateMap<Author, AuthorLookupDto>();
         CreateMap<Shelf, ShelfDto>();
-        CreateMap<CreateUpdateShelfDto, Shelf>();    
+        CreateMap<Shelf, ShelfLookupDto>();
+      
         
 
         /* You can configure your AutoMapper mapping configuration here.

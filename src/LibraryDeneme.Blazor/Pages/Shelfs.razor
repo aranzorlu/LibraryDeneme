@@ -1,14 +1,10 @@
 ﻿@page "/shelfs"
-@using Volo.Abp.Application.Dtos
-@using LibraryDeneme.Books
 @using LibraryDeneme.Shelfs
 @using LibraryDeneme.Localization
-@using Microsoft.Extensions.Localization
 @using Volo.Abp.AspNetCore.Components.Web
-@inject IStringLocalizer<LibraryDenemeResource> L
+@inherits LibraryDenemeComponentBase
+@inject IShelfAppService ShelfAppService
 @inject AbpBlazorMessageLocalizerHelper<LibraryDenemeResource> LH
-
-@inherits AbpCrudPageBase<IShelfAppService, ShelfDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateShelfDto>
 <Card>
     <CardHeader>
         <Row Class="justify-content-between">
@@ -16,37 +12,51 @@
                 <h2>@L["Shelfs"]</h2>
             </Column>
             <Column ColumnSize="ColumnSize.IsAuto">
-                <Button Color="Color.Primary"
-                        Clicked="OpenCreateModalAsync">
-                    @L["NewShelfs"]
-                </Button>
+                    @if (CanCreateShelf)
+                    {
+                        <Button Color="Color.Primary"
+                                Clicked="OpenCreateShelfModal">
+                            @L["NewShelfs"]
+                        </Button>
+                    }
             </Column>
         </Row>
     </CardHeader>
-
     <CardBody>
-    
         <DataGrid TItem="ShelfDto"
-                  Data="Entities"
+                  Data="ShelfList"
                   ReadData="OnDataGridReadAsync"
                   TotalItems="TotalCount"
                   ShowPager="true"
                   PageSize="PageSize">
             <DataGridColumns>
-                <DataGridEntityActionsColumn TItem="ShelfDto" @ref="@EntityActionsColumn">
+                <DataGridColumn Width="150px"
+                                TItem="ShelfDto"
+                                Field="@nameof(ShelfDto.Id)"
+                                Sortable="false"
+                                Caption="@L["Actions"]">
                     <DisplayTemplate>
-                        <EntityActions TItem="ShelfDto" EntityActionsColumn="@EntityActionsColumn">
-                            <EntityAction TItem="ShelfDto"
-                                          Text="@L["Delete"]"
-                                          Clicked="() => DeleteEntityAsync(context)"
-                                          ConfirmationMessage="() => GetDeleteConfirmationMessage(context)" />
-
-                            <EntityAction TItem="ShelfDto"
-                                          Text="@L["Edit"]"
-                                          Clicked="() => OpenEditModalAsync(context)" />
-                        </EntityActions>
+                        <Dropdown>
+                            <DropdownToggle Color="Color.Primary">
+                                @L["Actions"]
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                @if (CanEditShelf)
+                                {
+                                    <DropdownItem Clicked="() => OpenEditShelfModal(context)">
+                                        @L["Edit"]
+                                    </DropdownItem>
+                                }
+                                @if (CanDeleteShelf)
+                                {
+                                    <DropdownItem Clicked="() => DeleteShelfAsync(context)">
+                                        @L["Delete"]
+                                    </DropdownItem>
+                                }
+                            </DropdownMenu>
+                        </Dropdown>
                     </DisplayTemplate>
-                </DataGridEntityActionsColumn>
+                </DataGridColumn>
                 <DataGridColumn TItem="ShelfDto"
                                 Field="@nameof(ShelfDto.ShelfName)"
                                 Caption="@L["Name"]"></DataGridColumn>
@@ -57,85 +67,35 @@
                         @L[$"Enum:SType.{context.ShelfType}"]
                     </DisplayTemplate>
                 </DataGridColumn>
-                <DataGridColumn TItem="ShelfDto"
-                                Field="@nameof(ShelfDto.CreationTime)"
-                                Caption="@L["CreationTime"]">
-                    <DisplayTemplate>
-                        @context.CreationTime.ToLongDateString()
-                    </DisplayTemplate>
-                </DataGridColumn>
             </DataGridColumns>
         </DataGrid>
     </CardBody>
 </Card>
-<Modal @ref="@CreateModal">
-    <ModalBackdrop/>
+
+<Modal @ref="CreateShelfModal">
+    <ModalBackdrop />
     <ModalContent IsCentered="true">
         <Form>
             <ModalHeader>
                 <ModalTitle>@L["NewShelf"]</ModalTitle>
-                <CloseButton Clicked="CloseCreateModalAsync"/>
+                <CloseButton Clicked="CloseCreateShelfModal" />
             </ModalHeader>
             <ModalBody>
-                <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+                <Validations @ref="@CreateValidationsRef" Model="@NewShelf" ValidateOnLoad="false">
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
-                            <FieldLabel>@L["ShelfName"]</FieldLabel>
-                            <TextEdit @bind-Text="@NewEntity.ShelfName">
+                            <FieldLabel>@L["Name"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewShelf.ShelfName">
                                 <Feedback>
                                     <ValidationError/>
                                 </Feedback>
                             </TextEdit>
                         </Field>
                     </Validation>
+                    </Validations>
                     <Field>
                         <FieldLabel>@L["ShelfType"]</FieldLabel>
-                        <Select TValue="SType" @bind-SelectedValue="@NewEntity.ShelfType">
-                            @foreach (int shelfTypeValue in Enum.GetValues(typeof(SType)))
-                            {
-                                <SelectItem TValue="SType" Value="@((SType) shelfTypeValue)">
-                                    @L[$"Enum:ShelfType.{shelfTypeValue}"]
-                                </SelectItem>
-                            }
-                        </Select>
-                    </Field>
-                </Validations>
-            </ModalBody>
-            <ModalFooter>
-                <Button Color="Color.Secondary"
-                        Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
-                <Button Color="Color.Primary"
-                        Type="@ButtonType.Submit"
-                        PreventDefaultOnSubmit="true"
-                        Clicked="CreateEntityAsync">@L["Save"]</Button>
-            </ModalFooter>
-        </Form>
-    </ModalContent>
-    
-</Modal>
-<Modal @ref="@EditModal">
-    <ModalBackdrop />
-    <ModalContent IsCentered="true">
-        <Form>
-            <ModalHeader>
-                <ModalTitle>@EditingEntity.ShelfName</ModalTitle>
-                <CloseButton Clicked="CloseEditModalAsync" />
-            </ModalHeader>
-            <ModalBody>
-                <Validations @ref="@EditValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
-                    <Validation MessageLocalizer="@LH.Localize">
-                        <Field>
-                            <FieldLabel>@L["Name"]</FieldLabel>
-                            <TextEdit @bind-Text="@EditingEntity.ShelfName">
-                                <Feedback>
-                                    <ValidationError />
-                                </Feedback>
-                            </TextEdit>
-                        </Field>
-                    </Validation>
-                    <Field>
-                        <FieldLabel>@L["Type"]</FieldLabel>
-                        <Select TValue="SType" @bind-SelectedValue="@EditingEntity.ShelfType">
+                        <Select TValue="SType" @bind-SelectedValue="@NewShelf.ShelfType">
                             @foreach (int shelfTypeValue in Enum.GetValues(typeof(SType)))
                             {
                                 <SelectItem TValue="SType" Value="@((SType) shelfTypeValue)">
@@ -144,17 +104,66 @@
                             }
                         </Select>
                     </Field>
-                </Validations>
+                   
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary"
-                        Clicked="CloseEditModalAsync">
+                        Clicked="CloseCreateShelfModal">
                     @L["Cancel"]
                 </Button>
                 <Button Color="Color.Primary"
                         Type="@ButtonType.Submit"
                         PreventDefaultOnSubmit="true"
-                        Clicked="UpdateEntityAsync">
+                        Clicked="CreateShelfAsync">
+                    @L["Save"]
+                </Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+<Modal @ref="EditShelfModal">
+    <ModalBackdrop />
+    <ModalContent IsCentered="true">
+        <Form>
+            <ModalHeader>
+                        <ModalTitle>@EditingShelf.ShelfName</ModalTitle>
+                        <CloseButton Clicked="CloseEditShelfModal" />
+                    </ModalHeader>
+            <ModalBody>
+               <Validations @ref="@EditValidationsRef" Model="@EditingShelf" ValidateOnLoad="false">
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Name"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingShelf.ShelfName">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    </Validations>
+                    <Field>
+                        <FieldLabel>@L["ShelfType"]</FieldLabel>
+                        <Select TValue="SType" @bind-SelectedValue="@EditingShelf.ShelfType">
+                            @foreach (int shelfTypeValue in Enum.GetValues(typeof(SType)))
+                            {
+                                <SelectItem TValue="SType" Value="@((SType) shelfTypeValue)">
+                                    @L[$"Enum:SType.{shelfTypeValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditShelfModal">
+                    @L["Cancel"]
+                </Button>
+                <Button Color="Color.Primary"
+                        Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true"
+                        Clicked="UpdateShelfAsync">
                     @L["Save"]
                 </Button>
             </ModalFooter>

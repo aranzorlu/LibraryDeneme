@@ -13,8 +13,8 @@ using Volo.Abp.EntityFrameworkCore;
 namespace LibraryDeneme.Migrations
 {
     [DbContext(typeof(LibraryDenemeDbContext))]
-    [Migration("20240812083052_Created_Shelf_Entity")]
-    partial class Created_Shelf_Entity
+    [Migration("20240813122620_Added_ShelfId_To_Book")]
+    partial class Added_ShelfId_To_Book
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -140,12 +140,17 @@ namespace LibraryDeneme.Migrations
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("ShelfId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("ShelfId");
 
                     b.ToTable("AppBooks", (string)null);
                 });
@@ -199,13 +204,15 @@ namespace LibraryDeneme.Migrations
 
                     b.Property<string>("ShelfName")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
-                    b.Property<int>("Shelf_Type")
+                    b.Property<int>("ShelfType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ShelfName");
 
                     b.ToTable("AppShelfs", (string)null);
                 });
@@ -2088,6 +2095,12 @@ namespace LibraryDeneme.Migrations
                     b.HasOne("LibraryDeneme.Authors.Author", null)
                         .WithMany()
                         .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LibraryDeneme.Shelfs.Shelf", null)
+                        .WithMany()
+                        .HasForeignKey("ShelfId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

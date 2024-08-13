@@ -1,24 +1,22 @@
-﻿using System;
+﻿using LibraryDeneme.Authors;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using LibraryDeneme.Books;
 
 namespace LibraryDeneme.Shelfs
 {
-    public class CreateUpdateShelfDto
+    public class UpdateShelfDto
     {
         [Required]
-        [StringLength(128)]
-
+        [StringLength(ShelfConsts.MaxShelfNameLength)]
         public string ShelfName { get; set; } = string.Empty;
 
         [Required]
+        public SType  ShelfType { get; set; }
 
-        public SType ShelfType { get; set; } = SType.Undefined;
-
+       
     }
 }

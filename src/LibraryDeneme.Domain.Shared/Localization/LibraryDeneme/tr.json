@@ -60,7 +60,11 @@
     "Permission:Authors.Create": "Yeni Yazar Ekleme",
     "Permission:Authors.Edit": "Yazarı Düzenle",
     "Permission:Authors.Delete": "Yazarı Sil",
-    "AnAuthorIsRequiredForCreatingBook": "Kitap oluşturmak için bir yazara ihtiyaç var."
+    "AnAuthorIsRequiredForCreatingBook": "Kitap oluşturmak için bir yazara ihtiyaç var.",
+    "Permission:Shelfs": "Raf Yönetimi",
+    "Permission:Shelfs.Create": "Yeni Raf Oluşturma",
+    "Permission:Shelfs.Edit": "Raf Düzenleme",
+    "Permission:Shelfs.Delete": "Rafı Silme"
 
 
   }

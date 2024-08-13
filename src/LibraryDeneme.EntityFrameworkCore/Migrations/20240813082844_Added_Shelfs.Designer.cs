@@ -4,6 +4,7 @@ using LibraryDeneme.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace LibraryDeneme.Migrations
 {
     [DbContext(typeof(LibraryDenemeDbContext))]
-    partial class LibraryDenemeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240813082844_Added_Shelfs")]
+    partial class Added_Shelfs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,17 +140,12 @@ namespace LibraryDeneme.Migrations
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("ShelfId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
-
-                    b.HasIndex("ShelfId");
 
                     b.ToTable("AppBooks", (string)null);
                 });
@@ -2092,12 +2090,6 @@ namespace LibraryDeneme.Migrations
                     b.HasOne("LibraryDeneme.Authors.Author", null)
                         .WithMany()
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LibraryDeneme.Shelfs.Shelf", null)
-                        .WithMany()
-                        .HasForeignKey("ShelfId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
