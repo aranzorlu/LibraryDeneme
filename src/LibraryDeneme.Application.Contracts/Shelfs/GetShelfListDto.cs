@@ -7,12 +7,8 @@ using Volo.Abp.Application.Dtos;
 
 namespace LibraryDeneme.Shelfs
 {
-    public class ShelfDto : EntityDto<Guid>
+    public class GetShelfListDto : PagedAndSortedResultRequestDto
     {
-        public string ShelfName { get; set; }
-
-        public SType ShelfType { get; set; }
-
-       
+        public string? Filter { get; set; }
     }
 }

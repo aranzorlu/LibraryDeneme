@@ -7,6 +7,7 @@ namespace LibraryDeneme.Books;
 
 public class Book : AuditedAggregateRoot<Guid>
 {
+    public Guid ShelfId { get; set; }  
     public Guid AuthorId { get; set; }
     
     public string Name { get; set; }

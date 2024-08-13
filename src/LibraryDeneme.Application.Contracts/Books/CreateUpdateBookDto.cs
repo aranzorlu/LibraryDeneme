@@ -5,6 +5,7 @@ namespace LibraryDeneme.Books;
 
 public class CreateUpdateBookDto
 {
+    public Guid ShelfId { get; set; }
     public Guid AuthorId { get; set; }
 
     [Required]

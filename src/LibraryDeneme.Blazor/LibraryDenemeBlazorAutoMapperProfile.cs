@@ -11,7 +11,7 @@ public class LibraryDenemeBlazorAutoMapperProfile : Profile
     {
         CreateMap<BookDto, CreateUpdateBookDto>();
         CreateMap<AuthorDto, UpdateAuthorDto>();
-        CreateMap<ShelfDto, CreateUpdateShelfDto>();
+        CreateMap<ShelfDto, UpdateShelfDto>();
 
         //Define your AutoMapper configuration here for the Blazor project.
     }

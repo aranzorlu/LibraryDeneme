@@ -5,6 +5,9 @@ namespace LibraryDeneme.Books;
 
 public class BookDto : AuditedEntityDto<Guid>
 {
+    public string ShelfName { get; set; }   
+    
+    public Guid ShelfId { get; set; }
     public Guid AuthorId { get; set; }
 
     public string AuthorName { get; set; }

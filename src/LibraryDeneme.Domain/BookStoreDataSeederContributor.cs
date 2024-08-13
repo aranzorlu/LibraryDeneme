@@ -15,19 +15,25 @@ public class LibraryDenemeDataSeederContributor
     private readonly IRepository<Book, Guid> _bookRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly AuthorManager _authorManager;
-    private readonly IRepository<Shelf, Guid> _shelfRepository;
+    private readonly ShelfManager _shelfManager;
+    private readonly IShelfRepository _shelfRepository;
+
 
     public LibraryDenemeDataSeederContributor(
         IRepository<Book, Guid> bookRepository,
-        IRepository<Shelf, Guid> shelfRepository,
+        IShelfRepository shelfRepository,
+        ShelfManager shelfManager,
         IAuthorRepository authorRepository,
         AuthorManager authorManager)
     {
-        _shelfRepository = shelfRepository;
+
         _bookRepository = bookRepository;
         _authorRepository = authorRepository;
         _authorManager = authorManager;
+        _shelfManager = shelfManager;
+        _shelfRepository = shelfRepository;
     }
+
 
 
 
@@ -38,6 +44,20 @@ public class LibraryDenemeDataSeederContributor
         {
             return;
         }
+
+        var a100 = await _shelfRepository.InsertAsync(
+            await _shelfManager.CreateAsync(
+                "a100",
+                SType.Dystopia
+            )
+        );
+
+        var a200 = await _shelfRepository.InsertAsync(
+            await _shelfManager.CreateAsync(
+                 "a200",
+                 SType.ScienceFiction
+            )
+        );
 
         var orwell = await _authorRepository.InsertAsync(
             await _authorManager.CreateAsync(
@@ -58,6 +78,7 @@ public class LibraryDenemeDataSeederContributor
         await _bookRepository.InsertAsync(
             new Book
             {
+                ShelfId = a100.Id,
                 AuthorId = orwell.Id, // SET THE AUTHOR
                 Name = "1984",
                 Type = BookType.Dystopia,
@@ -70,6 +91,7 @@ public class LibraryDenemeDataSeederContributor
         await _bookRepository.InsertAsync(
             new Book
             {
+                ShelfId = a200.Id,
                 AuthorId = douglas.Id, // SET THE AUTHOR
                 Name = "The Hitchhiker's Guide to the Galaxy",
                 Type = BookType.ScienceFiction,
@@ -78,17 +100,6 @@ public class LibraryDenemeDataSeederContributor
             },
             autoSave: true
         );
-    await _shelfRepository.InsertAsync(
-           new Shelf
-           {
-
-               ShelfName = "Sciencefiction1",
-               ShelfType = SType.ScienceFiction,
-
-           },
-           autoSave: true);
-
-
     }
 }
 

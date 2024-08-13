@@ -58,6 +58,10 @@
                     </DisplayTemplate>
                 </DataGridEntityActionsColumn>
                 <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.ShelfName)"
+                                Caption="@L["Shelf"]"></DataGridColumn>
+
+                <DataGridColumn TItem="BookDto"
                                 Field="@nameof(BookDto.AuthorName)"
                                 Caption="@L["Author"]"></DataGridColumn>
 
@@ -107,6 +111,17 @@
             <ModalBody>
                 <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
                     <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Shelf"]</FieldLabel>
+                            <Select TValue="Guid" @bind-SelectedValue="@NewEntity.ShelfId">
+                                @foreach (var shelf in shelfList)
+                                {
+                                    <SelectItem TValue="Guid" Value="@shelf.Id">
+                                        @shelf.Name
+                                    </SelectItem>
+                                }
+                            </Select>
+                        </Field>
                         <Field>
                             <FieldLabel>@L["Author"]</FieldLabel>
                             <Select TValue="Guid" @bind-SelectedValue="@NewEntity.AuthorId">
@@ -177,6 +192,26 @@
                 <Validations @ref="@EditValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
+                          
+                            
+                            <FieldLabel>@L["Shelf"]</FieldLabel>
+                         
+                            <Select TValue="Guid" @bind-SelectedValue="@EditingEntity.ShelfId">
+                                
+                                @foreach (var shelf in shelfList)
+                                {
+                                 
+                                    <SelectItem TValue="Guid" Value="@shelf.Id">
+                                        @shelf.Name
+                                       
+                                    </SelectItem>
+                                  
+                                }
+                            </Select>
+                           
+                        </Field>
+
+                        <Field>
                             <FieldLabel>@L["Author"]</FieldLabel>
                             <Select TValue="Guid" @bind-SelectedValue="@EditingEntity.AuthorId">
                                 @foreach (var author in authorList)
@@ -232,36 +267,46 @@
 
 
     @code
+{
+    private string searchText = "";
+    private IReadOnlyList<BookDto> filteredBooks = Array.Empty<BookDto>();
+
+
+    //ADDED A NEW FIELD
+    IReadOnlyList<AuthorLookupDto> authorList = Array.Empty<AuthorLookupDto>();
+    IReadOnlyList<ShelfLookupDto> shelfList = Array.Empty<ShelfLookupDto>();
+
+    public Books() // Constructor
     {
-        private string searchText = "";
-        private IReadOnlyList<BookDto> filteredBooks = Array.Empty<BookDto>();
-        
-        //ADDED A NEW FIELD
-        IReadOnlyList<AuthorLookupDto> authorList = Array.Empty<AuthorLookupDto>();
+        CreatePolicyName = LibraryDenemePermissions.Books.Create;
+        UpdatePolicyName = LibraryDenemePermissions.Books.Edit;
+        DeletePolicyName = LibraryDenemePermissions.Books.Delete;
+    }
 
-        public Books() // Constructor
-        {
-            CreatePolicyName = LibraryDenemePermissions.Books.Create;
-            UpdatePolicyName = LibraryDenemePermissions.Books.Edit;
-            DeletePolicyName = LibraryDenemePermissions.Books.Delete;
-        }
+    //GET AUTHORS ON INITIALIZATION
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        authorList = (await AppService.GetAuthorLookupAsync()).Items;
+        shelfList = (await AppService.GetShelfLookupAsync()).Items;
+        await LoadBooksAsync();
+    }
 
-        //GET AUTHORS ON INITIALIZATION
-        protected override async Task OnInitializedAsync()
-        {
-            await base.OnInitializedAsync();
-            authorList = (await AppService.GetAuthorLookupAsync()).Items;
-            await LoadBooksAsync();
-        }
-
-        protected override async Task OpenCreateModalAsync()
-        {
+    protected override async Task OpenCreateModalAsync()
+    {
+             if (!shelfList.Any())
+            {
+                throw new UserFriendlyException(message: L["AnShelfIsRequiredForCreatingBook"]);
+            
+            }
+           
             if (!authorList.Any())
             {
                 throw new UserFriendlyException(message: L["AnAuthorIsRequiredForCreatingBook"]);
             }
 
             await base.OpenCreateModalAsync();
+            NewEntity.ShelfId = shelfList.First().Id;
             NewEntity.AuthorId = authorList.First().Id;
         }
         private async Task SearchBooksAsync(ChangeEventArgs e )

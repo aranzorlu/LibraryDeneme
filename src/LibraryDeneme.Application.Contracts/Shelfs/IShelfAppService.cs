@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
+using System;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace LibraryDeneme.Shelfs
+namespace LibraryDeneme.Shelfs;
+
+public interface IShelfAppService : IApplicationService
 {
-    public interface IShelfAppService : 
-        ICrudAppService<
-            ShelfDto,
-            Guid,
-            PagedAndSortedResultRequestDto,
-            CreateUpdateShelfDto>
-    {
-    }
+    Task<ShelfDto> GetAsync(Guid id);
+
+    Task<PagedResultDto<ShelfDto>> GetListAsync(GetShelfListDto input);
+
+    Task<ShelfDto> CreateAsync(CreateShelfDto input);
+
+    Task UpdateAsync(Guid id, UpdateShelfDto input);
+
+    Task DeleteAsync(Guid id);
 }
