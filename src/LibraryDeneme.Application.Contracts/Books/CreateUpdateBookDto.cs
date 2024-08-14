@@ -22,5 +22,9 @@ public class CreateUpdateBookDto
     [Required]
     public float Price { get; set; }
 
+    [Required]
+
+    public FloorNumber Floor { get; set; } = FloorNumber.Kat1;
+
 }
     

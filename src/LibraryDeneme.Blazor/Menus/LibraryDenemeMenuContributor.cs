@@ -57,21 +57,41 @@ public class LibraryDenemeMenuContributor : IMenuContributor
          new ApplicationMenuItem(
              "BooksStore",
              l["Menu:LibraryDeneme"],
-             icon: "fa fa-book"
-         ).AddItem(
-             new ApplicationMenuItem(
-                 "BooksStore.Books",
-                 l["Menu:Books"],
-                 url: "/books"
-             )
-         ).AddItem(
-             new ApplicationMenuItem(
-                 "BooksStore.Books",
+             icon: "fas fa-building"
+            ).AddItem(
+                new ApplicationMenuItem(
+                "BooksStore.Books",
+                l["Menu:XLibrary"]
+
+                
+                )
+                .AddItem(
+                new ApplicationMenuItem(
+                "BooksStore.Books.Book",
+                l["Menu:Books"],
+                url: "/books"
+                )
+                )
+                .AddItem(
+                new ApplicationMenuItem(
+                 "BooksStore.Books.Book",
                  l["Menu:Readers"],
-                 url: "/readers"
-                 )
-             )
+                 url: "/readers")
+
+                )
+
+                .AddItem(new ApplicationMenuItem(
+                   "BookStore.Books.Shelfs",
+                    l["Menu:Shelfs"],
+                    url: "/shelfs")
+                )
+                
+                 
+            )
         );
+         
+        
+        
 
         if (await context.IsGrantedAsync(LibraryDenemePermissions.Authors.Default))
         {

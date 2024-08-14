@@ -1,8 +1,9 @@
 {
   "culture": "tr",
   "texts": {
-    "Menu:LibraryDeneme": "Kitap",
+    "Menu:LibraryDeneme": "Bina",
     "Menu:Readers": "Okuyucular",
+    "Menu:XLibrary": "X Kütüphanesi",
     "Menu:Books": "Kitaplar",
     "Menu:Home": "Ana sayfa",
     "Menu:ContactUs": "Bize Ulaşın",
@@ -87,7 +88,14 @@
     "NewAuthor": "Yeni Yazar",
     "Author": "Yazar",
     "Books": "Kitaplar",
-    "NewBook": "Yeni Kitap"
+    "NewBook": "Yeni Kitap",
+    "Floor": "Kat",
+    "Enum:FloorNumber.Kat1": "1.Kat",
+    "Enum:FloorNumber.Kat2": "2.Kat",
+    "Enum:FloorNumber.Kat3": "3.Kat",
+    "Enum:FloorNumber.Kat4": "4.Kat"
+
+
 
 
 
