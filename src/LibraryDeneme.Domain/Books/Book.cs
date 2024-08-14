@@ -18,6 +18,8 @@ public class Book : AuditedAggregateRoot<Guid>
 
     public float Price { get; set; }
 
+    public FloorNumber Floor {  get; set; }
+
 
     
 }

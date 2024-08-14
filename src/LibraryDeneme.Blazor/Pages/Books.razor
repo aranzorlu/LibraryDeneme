@@ -93,6 +93,13 @@
                         @context.CreationTime.ToLongDateString()
                     </DisplayTemplate>
                 </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Floor)"
+                                Caption="@L["Floor"]">
+                    <DisplayTemplate>
+                        @L[$"Enum:FloorNumber.{context.Floor}"]
+                    </DisplayTemplate>
+                    </DataGridColumn>
             </DataGridColumns>
         </DataGrid>
     </CardBody>
@@ -161,6 +168,17 @@
                     <Field>
                         <FieldLabel>@L["Price"]</FieldLabel>
                         <NumericEdit TValue="float" @bind-Value="NewEntity.Price"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["Floor"]</FieldLabel>
+                        <Select TValue="FloorNumber" @bind-SelectedValue="@NewEntity.Floor">
+                            @foreach (int floorNumberValue in Enum.GetValues(typeof(FloorNumber)))
+                            {
+                                <SelectItem TValue="FloorNumber" Value="@((FloorNumber) floorNumberValue)">
+                                    @L[$"Enum:FloorNumber.Kat{floorNumberValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
                     </Field>
                     @*<Field>
                         <FieldLabel>@L["Image"]</FieldLabel>
@@ -250,6 +268,17 @@
                     <Field>
                         <FieldLabel>@L["Price"]</FieldLabel>
                         <NumericEdit TValue="float" @bind-Value="EditingEntity.Price"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["Floor"]</FieldLabel>
+                        <Select TValue="FloorNumber" @bind-SelectedValue="@EditingEntity.Floor">
+                            @foreach (int floorNumberValue in Enum.GetValues(typeof(FloorNumber)))
+                            {
+                                <SelectItem TValue="FloorNumber" Value="@((FloorNumber) floorNumberValue)">
+                                    @L[$"Enum:FloorNumber.Kat{floorNumberValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
                     </Field>
                 </Validations>
             </ModalBody>
