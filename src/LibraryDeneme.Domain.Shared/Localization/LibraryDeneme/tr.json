@@ -64,7 +64,31 @@
     "Permission:Shelfs": "Raf Yönetimi",
     "Permission:Shelfs.Create": "Yeni Raf Oluşturma",
     "Permission:Shelfs.Edit": "Raf Düzenleme",
-    "Permission:Shelfs.Delete": "Rafı Silme"
+    "Permission:Shelfs.Delete": "Rafı Silme",
+    "Shelf": "Raf",
+    "Menu:Shelfs": "Raflar",
+    "ShelfType": "Raf Türü",
+    "Actions": "İşlemler",
+    "Enum:SType.Undefined": "Tanımsız",
+    "Enum:SType.Adventure": "Macera",
+    "Enum:SType.Biography": "Biyografi",
+    "Enum:SType.Dystopia": "Distopya",
+    "Enum:SType.Fantastic": "Fantastik",
+    "Enum:SType.Horror": "Korku",
+    "Enum:SType.Science": "Bilim",
+    "Enum:SType.ScienceFiction": "Bilim Kurgu",
+    "Enum:SType.Poetry": "Şiir",
+    "Edit": "Düzenle",
+    "Delete": "Sil",
+    "Shelfs": "Raflar",
+    "NewShelfs": "Yeni Raf",
+    "Authors": "Yazarlar",
+    "BirthDate": "Doğum Tarihi",
+    "NewAuthor": "Yeni Yazar",
+    "Author": "Yazar",
+    "Books": "Kitaplar",
+    "NewBook": "Yeni Kitap"
+
 
 
   }

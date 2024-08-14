@@ -9,6 +9,6 @@ namespace LibraryDeneme.Books
 {
     public class ShelfLookupDto : EntityDto<Guid>
     {
-        public string Name { get; set; }
+        public string ShelfName { get; set; }
     }
 }
