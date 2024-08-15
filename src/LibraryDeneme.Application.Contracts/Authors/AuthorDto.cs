@@ -7,7 +7,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace LibraryDeneme.Authors
 {
-    public class AuthorDto : EntityDto<Guid>
+    public class AuthorDto : AuditedEntityDto<Guid>
 
     {
         public string Name { get; set; }

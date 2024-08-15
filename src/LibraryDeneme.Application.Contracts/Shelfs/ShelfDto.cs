@@ -7,7 +7,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace LibraryDeneme.Shelfs
 {
-    public class ShelfDto : EntityDto<Guid>
+    public class ShelfDto : AuditedEntityDto<Guid>
     {
         public string ShelfName { get; set; }
 

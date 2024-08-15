@@ -93,7 +93,25 @@
     "Enum:FloorNumber.Kat1": "1.Kat",
     "Enum:FloorNumber.Kat2": "2.Kat",
     "Enum:FloorNumber.Kat3": "3.Kat",
-    "Enum:FloorNumber.Kat4": "4.Kat"
+    "Enum:FloorNumber.Kat4": "4.Kat",
+    "Enum:SType.0": "Tanımsız",
+    "Enum:SType.1": "Macera",
+    "Enum:SType.2": "Biyografi",
+    "Enum:SType.3": "Distopya",
+    "Enum:SType.4": "Fantastik",
+    "Enum:SType.5": "Korku",
+    "Enum:SType.6": "Bilim",
+    "Enum:SType.7": "Bilim Kurgu",
+    "Enum:SType.8": "Şiir",
+    "Enum:BookType.0": "Tanımsız",
+    "Enum:BookType.1": "Macera",
+    "Enum:BookType.2": "Biyografi",
+    "Enum:BookType.3": "Distopya",
+    "Enum:BookType.4": "Fantastik",
+    "Enum:BookType.5": "Korku",
+    "Enum:BookType.6": "Bilim",
+    "Enum:BookType.7": "Bilim Kurgu",
+    "Enum:BookType.8": "Şiir"
 
 
 

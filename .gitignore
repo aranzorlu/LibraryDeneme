@@ -267,7 +267,6 @@ src/LibraryDeneme.Blazor/Logs/*
 src/LibraryDeneme.Blazor.Tiered/Logs/*
 
 # Use abp install-libs to restore.
-**/wwwroot/libs/*
 
 # IdentityServer temp files
 tempkey.rsa

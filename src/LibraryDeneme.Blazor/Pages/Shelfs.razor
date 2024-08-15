@@ -67,6 +67,31 @@
                         @L[$"Enum:SType.{context.ShelfType}"]
                     </DisplayTemplate>
                 </DataGridColumn>
+                <DataGridColumn TItem="ShelfDto"
+                                Field="@nameof(ShelfDto.CreationTime)"
+                                Caption="@L["CreationTime"]">
+                    <DisplayTemplate>
+                        @context.CreationTime.ToLongDateString()
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="ShelfDto"
+                                Field="@nameof(ShelfDto.LastModificationTime)"
+                                Caption="@L["LastModificationTime"]">
+                    <DisplayTemplate>
+                        @{
+                            var lastModificationTime = context.LastModificationTime;
+                        }
+                        @if (lastModificationTime.HasValue)
+                        {
+                            @lastModificationTime.Value.ToLongDateString()
+                        }
+                        else
+                        {
+                            <span>Güncellenme tarihi yok</span>
+                        }
+                    </DisplayTemplate>
+                </DataGridColumn>
+
             </DataGridColumns>
         </DataGrid>
     </CardBody>

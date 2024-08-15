@@ -1,4 +1,8 @@
 ﻿@page "/authors"
+@using Volo.Abp
+@using Volo.Abp.Application.Dtos
+@using Microsoft.Extensions.Localization
+@using LibraryDeneme.Permissions
 @using LibraryDeneme.Authors
 @using LibraryDeneme.Localization
 @using LibraryDeneme.Books
@@ -6,6 +10,7 @@
 @inherits LibraryDenemeComponentBase
 @inject IAuthorAppService AuthorAppService
 @inject AbpBlazorMessageLocalizerHelper<LibraryDenemeResource> LH
+
 <Card>
     <CardHeader>
         <Row Class="justify-content-between">
@@ -66,6 +71,31 @@
                                 Caption="@L["BirthDate"]">
                     <DisplayTemplate>
                         @context.BirthDate.ToShortDateString()
+                    </DisplayTemplate>
+                    </DataGridColumn>
+                     <DataGridColumn TItem="AuthorDto"
+                                Field="@nameof(AuthorDto.CreationTime)"
+                                Caption="@L["CreationTime"]">
+                    <DisplayTemplate>
+                        @context.CreationTime.ToLongDateString()
+                    </DisplayTemplate>
+              
+                </DataGridColumn>
+                <DataGridColumn TItem="AuthorDto"
+                                Field="@nameof(AuthorDto.LastModificationTime)"
+                                Caption="@L["LastModificationTime"]">
+                    <DisplayTemplate>
+                        @{
+                            var lastModificationTime = context.LastModificationTime;
+                        }
+                        @if (lastModificationTime.HasValue)
+                        {
+                            @lastModificationTime.Value.ToLongDateString()
+                        }
+                        else
+                        {
+                            <span>Güncellenme tarihi yok</span>
+                        }
                     </DisplayTemplate>
                 </DataGridColumn>
             </DataGridColumns>
