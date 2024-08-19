@@ -21,8 +21,6 @@ public class BookDto : AuditedEntityDto<Guid>
 
     public FloorNumber Floor { get; set; }
 
-    public string Bolum {  get; set; }  
-
 
 
 

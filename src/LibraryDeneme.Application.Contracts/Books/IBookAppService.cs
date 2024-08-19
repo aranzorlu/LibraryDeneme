@@ -16,6 +16,5 @@ public interface IBookAppService :
 {
     Task<ListResultDto<AuthorLookupDto>> GetAuthorLookupAsync();
     Task<ListResultDto<ShelfLookupDto>> GetShelfLookupAsync();
-    Task<PagedResultDto<BookDto>> GetBooksByLibraryAsync(string libraryName, PagedAndSortedResultRequestDto input);
 
 }
