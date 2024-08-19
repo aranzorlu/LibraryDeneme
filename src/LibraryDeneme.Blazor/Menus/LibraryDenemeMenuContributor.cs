@@ -69,7 +69,7 @@ public class LibraryDenemeMenuContributor : IMenuContributor
                 new ApplicationMenuItem(
                 "BooksStore.Books.Book",
                 l["Menu:Books"],
-                url: "/xbooks"
+                url: "/books"
                 )
                 )
                 .AddItem(
@@ -88,28 +88,6 @@ public class LibraryDenemeMenuContributor : IMenuContributor
                 
                  
             )
-            .AddItem(
-             new ApplicationMenuItem(
-                 "Bookstore.Books",
-                 l["Menu:YLibrary"]
-
-                 )
-             .AddItem(new ApplicationMenuItem(
-                 "Bookstore.Books.Book",
-                 l["Menu:YBooks"],
-                 url: "/books")
-             
-             )
-             .AddItem(new ApplicationMenuItem(
-                 "Booksotre.Books.Book",
-                 l["Menu:YShelfs"],
-                 url:"/shelfs"
-                 )
-             )
-             
-             )
-
-
         );
          
         
