@@ -15,7 +15,7 @@
     <CardHeader>
         <Row Class="justify-content-between">
             <Column ColumnSize="ColumnSize.IsAuto">
-                <h2>@L["Books"]</h2>
+                <h2>@L["XBooks"]</h2>
             </Column>
             
             <Column ColumnSize="ColumnSize.IsAuto">
@@ -100,6 +100,11 @@
                         @L[$"Enum:FloorNumber.{context.Floor}"]
                     </DisplayTemplate>
                     </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Bolum)"
+                                Caption="@L["Bolum"]">
+                   
+                </DataGridColumn>
             </DataGridColumns>
         </DataGrid>
     </CardBody>
@@ -150,6 +155,14 @@
                             </TextEdit>
                         </Field>
                     </Validation>
+                    <Field>
+                        <FieldLabel>@L["Bolum"]</FieldLabel>
+                        <TextEdit @bind-Text="@NewEntity.Bolum">
+                            <Feedback>
+                                <ValidationError />
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
                     <Field>
                         <FieldLabel>@L["Type"]</FieldLabel>
                         <Select TValue="BookType" @bind-SelectedValue="@NewEntity.Type">
@@ -250,6 +263,14 @@
                             </TextEdit>
                         </Field>
                     </Validation>
+                    <Field>
+                        <FieldLabel>@L["Bolum"]</FieldLabel>
+                        <TextEdit @bind-Text="@EditingEntity.Bolum">
+                            <Feedback>
+                                <ValidationError />
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
                     <Field>
                         <FieldLabel>@L["Type"]</FieldLabel>
                         <Select TValue="BookType" @bind-SelectedValue="@EditingEntity.Type">
