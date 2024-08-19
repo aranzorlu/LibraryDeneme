@@ -84,7 +84,8 @@ public class LibraryDenemeDataSeederContributor
                 Type = BookType.Dystopia,
                 PublishDate = new DateTime(1949, 6, 8),
                 Price = 19.84f,
-                Floor = FloorNumber.Kat1
+                Floor = FloorNumber.Kat1,
+                Bolum = "X Kütüphanesi"
             },
             autoSave: true
         );
@@ -98,7 +99,8 @@ public class LibraryDenemeDataSeederContributor
                 Type = BookType.ScienceFiction,
                 PublishDate = new DateTime(1995, 9, 27),
                 Price = 42.0f,
-                Floor = FloorNumber.Kat1
+                Floor = FloorNumber.Kat1,
+                Bolum = "X Kütüphanesi"
             },
             autoSave: true
         );
