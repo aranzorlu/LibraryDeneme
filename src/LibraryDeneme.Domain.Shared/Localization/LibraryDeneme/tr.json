@@ -111,11 +111,11 @@
     "Enum:BookType.5": "Korku",
     "Enum:BookType.6": "Bilim",
     "Enum:BookType.7": "Bilim Kurgu",
-    "Enum:BookType.8": "Şiir"
-
-
-
-
+    "Enum:BookType.8": "Şiir",
+    "Menu:YBooks": "Kitaplar",
+    "Menu:YShelfs": "Raflar",
+    "Menu:YLibrary": "Y Kütüphanesi",
+    "LastModificationTime": "Son Güncelleme"
 
   }
-}
+  }

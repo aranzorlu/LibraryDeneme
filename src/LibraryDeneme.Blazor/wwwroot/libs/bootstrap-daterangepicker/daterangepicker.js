@@ -479,7 +479,8 @@
                 this.updateElement();
 
             this.updateMonthsInView();
-        },
+
+
 
         setEndDate: function(endDate) {
             if (typeof endDate === 'string')
