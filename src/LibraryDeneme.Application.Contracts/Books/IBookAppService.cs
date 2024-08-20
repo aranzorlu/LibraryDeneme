@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LibraryDeneme.Books;
 
@@ -14,8 +15,12 @@ public interface IBookAppService :
         
 
 {
+    [AllowAnonymous]
     Task<ListResultDto<AuthorLookupDto>> GetAuthorLookupAsync();
+
+    [AllowAnonymous]
     Task<ListResultDto<ShelfLookupDto>> GetShelfLookupAsync();
-    Task<PagedResultDto<BookDto>> GetBooksByLibraryAsync(string libraryName, PagedAndSortedResultRequestDto input);
+    [AllowAnonymous]
+    Task<PagedResultDto<BookDto>> GetBooksByLibraryAsync(BolumType libraryName, PagedAndSortedResultRequestDto input);
 
 }

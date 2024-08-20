@@ -16,7 +16,7 @@ using Volo.Abp.ObjectMapping;
 using LibraryDeneme.Shelfs;
 namespace LibraryDeneme.Books;
 
-[Authorize(LibraryDenemePermissions.Books.Default)]
+[AllowAnonymous]
 public class BookAppService :
     CrudAppService<
         Book, //The Book entity
@@ -153,10 +153,13 @@ public class BookAppService :
             ObjectMapper.Map<List<Shelf>, List<ShelfLookupDto>>(shelfs)
         );
     }
-    public async Task<PagedResultDto<BookDto>> GetBooksByLibraryAsync(string libraryName, PagedAndSortedResultRequestDto input)
+    public async Task<PagedResultDto<BookDto>> GetBooksByLibraryAsync(BolumType libraryName, PagedAndSortedResultRequestDto input)
     {
         // Get the IQueryable<Book> from the repository
         var queryable = await Repository.GetQueryableAsync();
+
+        // Get the enum value as string
+        
 
         // Filter the books by the specified library name (Bolum)
         var query = from book in queryable
@@ -191,6 +194,7 @@ public class BookAppService :
             bookDtos
         );
     }
+
 
 
 }

@@ -97,7 +97,7 @@ public class LibraryDenemeMenuContributor : IMenuContributor
              .AddItem(new ApplicationMenuItem(
                  "Bookstore.Books.Book",
                  l["Menu:YBooks"],
-                 url: "/books")
+                 url: "/ybooks")
              
              )
              .AddItem(new ApplicationMenuItem(
@@ -108,6 +108,8 @@ public class LibraryDenemeMenuContributor : IMenuContributor
              )
              
              )
+
+
 
 
         );
@@ -129,6 +131,14 @@ public class LibraryDenemeMenuContributor : IMenuContributor
                 "BookStore.Shelfs",
                 l["Menu:Shelfs"],
                 url: "/shelfs")
+                );
+        }
+        if (await context.IsGrantedAsync(LibraryDenemePermissions.Books.Default))
+        {
+            context.Menu.AddItem(new ApplicationMenuItem(
+                "BookStore.Books",
+                l["Menu:Books"],
+                url: "/books")
                 );
         }
     }

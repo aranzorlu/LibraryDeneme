@@ -115,7 +115,12 @@
     "Menu:YBooks": "Kitaplar",
     "Menu:YShelfs": "Raflar",
     "Menu:YLibrary": "Y Kütüphanesi",
-    "LastModificationTime": "Son Güncelleme"
+    "LastModificationTime": "Son Güncelleme",
+    "Enum:BolumType.0": "X Kütüphanesi",
+    "Enum:BolumType.1": "Y Kütüphanesi",
+    "Enum:BolumType.XKütüphanesi": "X Kütüphanesi",
+    "Enum:BolumType.YKütüphanesi": "Y Kütüphanesi"
+
 
   }
   }

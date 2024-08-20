@@ -20,7 +20,7 @@ public class Book : AuditedAggregateRoot<Guid>
 
     public FloorNumber Floor {  get; set; }
 
-    public string Bolum { get; set; }
+    public BolumType Bolum { get; set; }
 
 
     

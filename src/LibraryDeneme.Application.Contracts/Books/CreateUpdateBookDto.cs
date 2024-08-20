@@ -28,7 +28,7 @@ public class CreateUpdateBookDto
 
     [Required]
 
-    public string Bolum {  get; set; } = string.Empty;
+    public BolumType Bolum {  get; set; } 
 
 }
     
