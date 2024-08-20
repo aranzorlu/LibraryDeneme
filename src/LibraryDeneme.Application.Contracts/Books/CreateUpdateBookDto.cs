@@ -26,5 +26,9 @@ public class CreateUpdateBookDto
 
     public FloorNumber Floor { get; set; } = FloorNumber.Kat1;
 
+    [Required]
+
+    public BolumType Bolum {  get; set; } 
+
 }
     

@@ -69,7 +69,7 @@ public class LibraryDenemeMenuContributor : IMenuContributor
                 new ApplicationMenuItem(
                 "BooksStore.Books.Book",
                 l["Menu:Books"],
-                url: "/books"
+                url: "/xbooks"
                 )
                 )
                 .AddItem(
@@ -88,6 +88,30 @@ public class LibraryDenemeMenuContributor : IMenuContributor
                 
                  
             )
+            .AddItem(
+             new ApplicationMenuItem(
+                 "Bookstore.Books",
+                 l["Menu:YLibrary"]
+
+                 )
+             .AddItem(new ApplicationMenuItem(
+                 "Bookstore.Books.Book",
+                 l["Menu:YBooks"],
+                 url: "/ybooks")
+             
+             )
+             .AddItem(new ApplicationMenuItem(
+                 "Booksotre.Books.Book",
+                 l["Menu:YShelfs"],
+                 url:"/shelfs"
+                 )
+             )
+             
+             )
+
+
+
+
         );
          
         
@@ -107,6 +131,14 @@ public class LibraryDenemeMenuContributor : IMenuContributor
                 "BookStore.Shelfs",
                 l["Menu:Shelfs"],
                 url: "/shelfs")
+                );
+        }
+        if (await context.IsGrantedAsync(LibraryDenemePermissions.Books.Default))
+        {
+            context.Menu.AddItem(new ApplicationMenuItem(
+                "BookStore.Books",
+                l["Menu:Books"],
+                url: "/books")
                 );
         }
     }

@@ -15,7 +15,7 @@
     <CardHeader>
         <Row Class="justify-content-between">
             <Column ColumnSize="ColumnSize.IsAuto">
-                <h2>@L["Books"]</h2>
+                <h2>@L["XBooks"]</h2>
             </Column>
             
             <Column ColumnSize="ColumnSize.IsAuto">
@@ -100,6 +100,14 @@
                         @L[$"Enum:FloorNumber.{context.Floor}"]
                     </DisplayTemplate>
                     </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Bolum)"
+                                Caption="@L["Bolum"]">
+                    <DisplayTemplate>
+                        @L[$"Enum:BolumType.{context.Bolum}"]
+                    </DisplayTemplate>
+                   
+                </DataGridColumn>
             </DataGridColumns>
         </DataGrid>
     </CardBody>
@@ -150,6 +158,18 @@
                             </TextEdit>
                         </Field>
                     </Validation>
+                    <Field>
+                        <FieldLabel>@L["Bolum"]</FieldLabel>
+                        <Select TValue="BolumType" @bind-SelectedValue="@NewEntity.Bolum">
+                            @foreach (int bolumTypeValue in Enum.GetValues(typeof(BolumType)))
+                            {
+                                <SelectItem TValue="BolumType" Value="@((BolumType) bolumTypeValue)">
+                                    @L[$"Enum:BolumType.{bolumTypeValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
+
+                    </Field>
                     <Field>
                         <FieldLabel>@L["Type"]</FieldLabel>
                         <Select TValue="BookType" @bind-SelectedValue="@NewEntity.Type">
@@ -249,7 +269,23 @@
                                 </Feedback>
                             </TextEdit>
                         </Field>
-                    </Validation>
+                    
+                  <Field>
+                 <FieldLabel>@L["Bolum"]</FieldLabel>
+                 
+                 <Select TValue="BolumType" @bind-Value="@EditingEntity.Bolum">
+                                @foreach (int bolumTypeValue in Enum.GetValues(typeof(BolumType)))
+                                {
+                                    <SelectItem TValue="BolumType" Value="@((BolumType) bolumTypeValue)">
+                                        @L[$"Enum:BolumType.{bolumTypeValue}"]
+                                    </SelectItem>
+                                }
+                     
+                       </Select>
+                     
+                    </Field>
+                    
+
                     <Field>
                         <FieldLabel>@L["Type"]</FieldLabel>
                         <Select TValue="BookType" @bind-SelectedValue="@EditingEntity.Type">
@@ -280,6 +316,7 @@
                             }
                         </Select>
                     </Field>
+                    </Validation>
                 </Validations>
             </ModalBody>
             <ModalFooter>
@@ -297,6 +334,7 @@
 
     @code
 {
+    
     private string searchText = "";
     private IReadOnlyList<BookDto> filteredBooks = Array.Empty<BookDto>();
 
@@ -304,6 +342,7 @@
     //ADDED A NEW FIELD
     IReadOnlyList<AuthorLookupDto> authorList = Array.Empty<AuthorLookupDto>();
     IReadOnlyList<ShelfLookupDto> shelfList = Array.Empty<ShelfLookupDto>();
+
 
     public Books() // Constructor
     {
@@ -359,16 +398,10 @@
             Entities = result.Items;
             filteredBooks = Entities; // Initially show all books
         }
+
+    
+
+}
        
 
 
-}
-    @*private string inputValue;
-
-    /*private void HandleValueChanged(ChangeEventArgs<string> args)
-    {
-        Console.WriteLine("New value: " + args.Value);
-        // You can also perform other actions here, like updating a property or calling a method
-    }
-    }
-    @**@

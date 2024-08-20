@@ -16,7 +16,7 @@ using Volo.Abp.ObjectMapping;
 using LibraryDeneme.Shelfs;
 namespace LibraryDeneme.Books;
 
-[Authorize(LibraryDenemePermissions.Books.Default)]
+[AllowAnonymous]
 public class BookAppService :
     CrudAppService<
         Book, //The Book entity
@@ -153,6 +153,50 @@ public class BookAppService :
             ObjectMapper.Map<List<Shelf>, List<ShelfLookupDto>>(shelfs)
         );
     }
+    public async Task<PagedResultDto<BookDto>> GetBooksByLibraryAsync(BolumType libraryName, PagedAndSortedResultRequestDto input)
+    {
+        // Get the IQueryable<Book> from the repository
+        var queryable = await Repository.GetQueryableAsync();
+
+        // Get the enum value as string
+        
+
+        // Filter the books by the specified library name (Bolum)
+        var query = from book in queryable
+                    join author in await _authorRepository.GetQueryableAsync() on book.AuthorId equals author.Id
+                    join shelf in await _shelfRepository.GetQueryableAsync() on book.ShelfId equals shelf.Id
+                    where book.Bolum == libraryName
+                    select new { book, author, shelf };
+
+        // Apply paging and sorting
+        query = query
+            .OrderBy(NormalizeSorting(input.Sorting))
+            .Skip(input.SkipCount)
+            .Take(input.MaxResultCount);
+
+        // Execute the query and get the list of books
+        var queryResult = await AsyncExecuter.ToListAsync(query);
+
+        // Convert the result to BookDto list
+        var bookDtos = queryResult.Select(x =>
+        {
+            var bookDto = ObjectMapper.Map<Book, BookDto>(x.book);
+            bookDto.AuthorName = x.author.Name;
+            bookDto.ShelfName = x.shelf.ShelfName;
+            return bookDto;
+        }).ToList();
+
+        // Get the total count of books in the specified library
+        var totalCount = await Repository.CountAsync(book => book.Bolum == libraryName);
+
+        return new PagedResultDto<BookDto>(
+            totalCount,
+            bookDtos
+        );
+    }
+
+
+
 }
 
 
