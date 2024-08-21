@@ -1,4 +1,4 @@
-﻿@page "/xbooks"
+﻿@page "/ybooks"
 
 @using Volo.Abp.Application.Dtos
 @using LibraryDeneme.Books
@@ -14,7 +14,7 @@
     <CardHeader>
         <Row Class="justify-content-between">
             <Column ColumnSize="ColumnSize.IsAuto">
-                <h2>@L["XBooks"]</h2>
+                <h2>@L["YBooks"]</h2>
             </Column>
         </Row>
     </CardHeader>
@@ -87,7 +87,7 @@
 
 @code {
 
-    public BolumType LibraryName = BolumType.XKütüphanesi;
+    public BolumType LibraryName = BolumType.YKütüphanesi;
 
     private PagedResultDto<BookDto> books;
     private string searchText = "";
