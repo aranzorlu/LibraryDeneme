@@ -8,7 +8,10 @@ using Microsoft.Extensions.Hosting;
 using Polly;
 using Serilog;
 using Serilog.Events;
+using Syncfusion.Blazor;
+using Syncfusion.Licensing;
 using Volo.Abp.Modularity;
+
 
 namespace LibraryDeneme.Blazor;
 
@@ -16,12 +19,13 @@ public class Program
 {
     public async static Task<int> Main(string[] args)
     {
-        
+        SyncfusionLicenseProvider.RegisterLicense("MzQ0MTI1M0AzMjM2MmUzMDJlMzBtamZSdlVseUw2SGhSakVRZWgxeVhQZENuNHR3SVpxdWZTTEREZ1o3NmZVPQ==");
         try
         {
             
             Log.Information("Starting web host.");
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddSyncfusionBlazor();
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireAuthenticatedUser", policy =>

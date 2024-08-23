@@ -23,6 +23,8 @@ public class BookDto : AuditedEntityDto<Guid>
 
     public BolumType Bolum {  get; set; }  
 
+    public StatuType BookStatu { get; set; }    
+
 
 
 

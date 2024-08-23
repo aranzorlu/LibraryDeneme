@@ -79,6 +79,59 @@
                         @L[$"Enum:FloorNumber.{context.Floor}"]
                     </DisplayTemplate>
                 </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+								Field="@nameof(BookDto.BookStatu)"
+								Caption="@L["Statu"]">
+					<DisplayTemplate>
+						@{
+							var book = (context as BookDto);
+							if (book.BookStatu == StatuType.Active)
+							{
+								<div class="statustemp e-activecolor">
+									<span class="statustxt e-activecolor">@book.BookStatu</span>
+								</div>
+
+							}
+							else
+							{
+								<div class="statustemp e-inactivecolor">
+									<span class="statustxt e-inactivecolor">@book.BookStatu</span>
+								</div>
+							}
+						}
+                        <style>
+                            .statustemp.e-inactivecolor {
+                                background-color: #ffd7cc;
+                                width: 64px;
+                            }
+
+                            .statustemp.e-activecolor {
+                                background-color: #ccffcc;
+                                width: 57px;
+                            }
+
+                            .statustxt.e-activecolor {
+                                color: #00cc00;
+                            }
+
+                            .statustxt.e-inactivecolor {
+                                color: #e60000;
+                            }
+
+                            .statustemp {
+                                position: relative;
+                                height: 19px;
+                                border-radius: 5px;
+                                text-align: center;
+                            }
+
+                            .statustxt {
+                                position: relative;
+                                top: -5px;
+                            }
+                        </style>
+                        </DisplayTemplate>
+                        </DataGridColumn>
 
             </DataGridColumns>
         </DataGrid>
@@ -115,11 +168,11 @@
         if (string.IsNullOrEmpty(searchText))
         {
             // Reset to all books if search text is empty
-            filteredBooks = Entities;
+            filteredBooks = books.Items;
             return;
         }
 
-        filteredBooks = Entities.Where(book => book.Name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
+        filteredBooks = books.Items.Where(book => book.Name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
                                                 book.AuthorName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
                                   .ToList(); // Create a filtered copy
     }

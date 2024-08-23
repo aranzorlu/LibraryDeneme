@@ -22,6 +22,8 @@ public class Book : AuditedAggregateRoot<Guid>
 
     public BolumType Bolum { get; set; }
 
+    public StatuType BookStatu { get; set; }
+
 
     
 }
