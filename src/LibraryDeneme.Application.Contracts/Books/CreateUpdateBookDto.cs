@@ -28,7 +28,11 @@ public class CreateUpdateBookDto
 
     [Required]
 
-    public BolumType Bolum {  get; set; } 
+    public BolumType Bolum {  get; set; }
+
+    [Required]
+
+    public StatuType BookStatu { get; set; } = StatuType.Active;
 
 }
     

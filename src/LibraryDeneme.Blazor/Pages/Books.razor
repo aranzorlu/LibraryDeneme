@@ -1,5 +1,4 @@
 ﻿@page "/books"
-
 @using Volo.Abp
 @using Volo.Abp.Application.Dtos
 @using LibraryDeneme.Books
@@ -12,396 +11,466 @@
 @inherits AbpCrudPageBase<IBookAppService, BookDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateBookDto>
 
 <Card>
-    <CardHeader>
-        <Row Class="justify-content-between">
-            <Column ColumnSize="ColumnSize.IsAuto">
-                <h2>@L["XBooks"]</h2>
-            </Column>
-            
-            <Column ColumnSize="ColumnSize.IsAuto">
-                
-                <Button Color="Color.Primary"
-                        Clicked="OpenCreateModalAsync">@L["NewBook"]</Button>
-            </Column>
-        </Row>
-       
-    </CardHeader>
-    <CardBody>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h2>@L["Books"]</h2>
+            </Column>
+            
+            <Column ColumnSize="ColumnSize.IsAuto">
+                
+                <Button Color="Color.Primary"
+                        Clicked="OpenCreateModalAsync">@L["NewBook"]</Button>
+            </Column>
+        </Row>
+        
+       
+    </CardHeader>
+    
+    <CardBody>
         <div class=" wrapper">
-             <div class="input-container">   
+            <div class="input-container">
                 <input placeholder="Arama..." type="text" name="text" class="input" @bind="searchText" @oninput="@(async (e) => await SearchBooksAsync(e))" />
-                     <span class="icon"> 
-                 <svg width="19px" height="19px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="1" d="M14 5H20" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path opacity="1" d="M14 8H17" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M21 11.5C21 16.75 16.75 21 11.5 21C6.25 21 2 16.75 2 11.5C2 6.25 6.25 2 11.5 2" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> <path opacity="1" d="M22 22L20 20" stroke="#000" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-            </span>
-          </div>
-          </div>
-            
-        <DataGrid TItem="BookDto"
-                  Data="filteredBooks"
-                  ReadData="OnDataGridReadAsync"
-                  CurrentPage="CurrentPage"
-                  TotalItems="TotalCount"
-                  ShowPager="true"
-                  PageSize="PageSize">
-            <DataGridColumns>
-                <DataGridEntityActionsColumn TItem="BookDto" @ref="@EntityActionsColumn">
-                    <DisplayTemplate>
-                        <EntityActions TItem="BookDto" EntityActionsColumn="@EntityActionsColumn">
-                            <EntityAction TItem="BookDto"
-                                          Text="@L["Edit"]"
-                                          Clicked="() => OpenEditModalAsync(context)" />
-                            <EntityAction TItem="BookDto"
-                                          Text="@L["Delete"]"
-                                          Clicked="() => DeleteEntityAsync(context)"
-                                          ConfirmationMessage="()=>GetDeleteConfirmationMessage(context)" />
-                        </EntityActions>
-                    </DisplayTemplate>
-                </DataGridEntityActionsColumn>
-                <DataGridColumn TItem="BookDto"
-                                Field="@nameof(BookDto.ShelfName)"
-                                Caption="@L["Shelf"]"></DataGridColumn>
+                <span class="icon">
+                    <svg width="19px" height="19px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="1" d="M14 5H20" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path opacity="1" d="M14 8H17" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M21 11.5C21 16.75 16.75 21 11.5 21C6.25 21 2 16.75 2 11.5C2 6.25 6.25 2 11.5 2" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path> <path opacity="1" d="M22 22L20 20" stroke="#000" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                </span>
+            </div>
+        </div>
+            
+        <DataGrid TItem="BookDto"
+                 		Data="filteredBooks"
+                  ReadData="OnDataGridReadAsync"
+                  CurrentPage="CurrentPage"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridEntityActionsColumn TItem="BookDto" @ref="@EntityActionsColumn">
+                    <DisplayTemplate>
+                        <EntityActions TItem="BookDto" EntityActionsColumn="@EntityActionsColumn">
+                            <EntityAction TItem="BookDto"
+                                          Text="@L["Edit"]"
+                                          Clicked="() => OpenEditModalAsync(context)" />
+                            <EntityAction TItem="BookDto"
+                                          Text="@L["Delete"]"
+                                          Clicked="() => DeleteEntityAsync(context)"
+                                          ConfirmationMessage="()=>GetDeleteConfirmationMessage(context)" />
+                        </EntityActions>
+                    </DisplayTemplate>
+                </DataGridEntityActionsColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.ShelfName)"
+                                Caption="@L["Shelf"]"></DataGridColumn>
 
-                <DataGridColumn TItem="BookDto"
-                                Field="@nameof(BookDto.AuthorName)"
-                                Caption="@L["Author"]"></DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.AuthorName)"
+                                Caption="@L["Author"]"></DataGridColumn>
 
-                <DataGridColumn TItem="BookDto"
-                                Field="@nameof(BookDto.Name)"
-                                Caption="@L["Name"]"></DataGridColumn>
-                <DataGridColumn TItem="BookDto"
-                                Field="@nameof(BookDto.Type)"
-                                Caption="@L["Type"]">
-                    <DisplayTemplate>
-                        @L[$"Enum:BookType.{context.Type}"]
-                    </DisplayTemplate>
-                </DataGridColumn>
-                <DataGridColumn TItem="BookDto"
-                                Field="@nameof(BookDto.PublishDate)"
-                                Caption="@L["PublishDate"]">
-                    <DisplayTemplate>
-                        @context.PublishDate.ToShortDateString()
-                    </DisplayTemplate>
-                </DataGridColumn>
-                <DataGridColumn TItem="BookDto"
-                                Field="@nameof(BookDto.Price)"
-                                Caption="@L["Price"]">
-                </DataGridColumn>
-                <DataGridColumn TItem="BookDto"
-                                Field="@nameof(BookDto.CreationTime)"
-                                Caption="@L["CreationTime"]">
-                    <DisplayTemplate>
-                        @context.CreationTime.ToLongDateString()
-                    </DisplayTemplate>
-                </DataGridColumn>
-                <DataGridColumn TItem="BookDto"
-                                Field="@nameof(BookDto.Floor)"
-                                Caption="@L["Floor"]">
-                    <DisplayTemplate>
-                        @L[$"Enum:FloorNumber.{context.Floor}"]
-                    </DisplayTemplate>
-                    </DataGridColumn>
-                <DataGridColumn TItem="BookDto"
-                                Field="@nameof(BookDto.Bolum)"
-                                Caption="@L["Bolum"]">
-                    <DisplayTemplate>
-                        @L[$"Enum:BolumType.{context.Bolum}"]
-                    </DisplayTemplate>
-                   
-                </DataGridColumn>
-            </DataGridColumns>
-        </DataGrid>
-    </CardBody>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Name)"
+                                Caption="@L["Name"]"></DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Type)"
+                                Caption="@L["Type"]">
+                    <DisplayTemplate>
+                        @L[$"Enum:BookType.{context.Type}"]
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.PublishDate)"
+                                Caption="@L["PublishDate"]">
+                    <DisplayTemplate>
+                        @context.PublishDate.ToShortDateString()
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Price)"
+                                Caption="@L["Price"]">
+                </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.CreationTime)"
+                                Caption="@L["CreationTime"]">
+                    <DisplayTemplate>
+                        @context.CreationTime.ToLongDateString()
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Floor)"
+                                Caption="@L["Floor"]">
+                    <DisplayTemplate>
+                        @L[$"Enum:FloorNumber.{context.Floor}"]
+                    </DisplayTemplate>
+                    </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Bolum)"
+                                Caption="@L["Bolum"]">
+                    <DisplayTemplate>
+                        @L[$"Enum:BolumType.{context.Bolum}"]
+                    </DisplayTemplate>
+                   
+                </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.BookStatu)"
+                                Caption="@L["Statu"]">
+                    <DisplayTemplate>
+                        @{
+                            var book = (context as BookDto);
+                            if (book.BookStatu == StatuType.Active)
+                            {
+                                <div class="statustemp e-activecolor">
+                                    <span class="statustxt e-activecolor">@book.BookStatu</span>
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div class="statustemp e-inactivecolor">
+                                    <span class="statustxt e-inactivecolor">@book.BookStatu</span>
+                                </div>
+                            }
+                        }
+                        <style>
+                            .statustemp.e-inactivecolor {
+                                background-color: #ffd7cc;
+                                width: 64px;
+                            }
+
+                            .statustemp.e-activecolor {
+                                background-color: #ccffcc;
+                                width: 57px;
+                            }
+
+                            .statustxt.e-activecolor {
+                                color: #00cc00;
+                            }
+
+                            .statustxt.e-inactivecolor {
+                                color: #e60000;
+                            }
+
+                            .statustemp {
+                                position: relative;
+                                height: 19px;
+                                border-radius: 5px;
+                                text-align: center;
+                            }
+
+                            .statustxt {
+                                position: relative;
+                                top: -5px;
+                            }
+                        </style>
+                    </DisplayTemplate>
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
 </Card>
 
-<Modal @ref="@CreateModal">
-    <ModalBackdrop />
-    <ModalContent IsCentered="true">
-        <Form>
-            <ModalHeader>
-               
-                <ModalTitle>@L["NewBook"]</ModalTitle>
-                
-                <CloseButton Clicked="CloseCreateModalAsync"/>
-            </ModalHeader>
-            <ModalBody>
-                <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
-                    <Validation MessageLocalizer="@LH.Localize">
-                        <Field>
-                            <FieldLabel>@L["Shelf"]</FieldLabel>
-                            <Select TValue="Guid" @bind-SelectedValue="@NewEntity.ShelfId">
-                                @foreach (var shelf in shelfList)
-                                {
-                                    <SelectItem TValue="Guid" Value="@shelf.Id">
-                                        @shelf.ShelfName
-                                    </SelectItem>
-                                }
-                            </Select>
-                        </Field>
-                        <Field>
-                            <FieldLabel>@L["Author"]</FieldLabel>
-                            <Select TValue="Guid" @bind-SelectedValue="@NewEntity.AuthorId">
-                                @foreach (var author in authorList)
-                                {
-                                    <SelectItem TValue="Guid" Value="@author.Id">
-                                        @author.Name
-                                    </SelectItem>
-                                }
-                            </Select>
-                        </Field>
+<Modal @ref="CreateModal">
+    <ModalBackdrop />
+    <ModalContent IsCentered="true">
+        <Form>
+            <ModalHeader>
+               
+                <ModalTitle>@L["NewBook"]</ModalTitle>
+                
+                <CloseButton Clicked="CloseCreateModalAsync"/>
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Shelf"]</FieldLabel>
+                            <Select TValue="Guid" @bind-SelectedValue="@NewEntity.ShelfId">
+                                @foreach (var shelf in shelfList)
+                                {
+                                    <SelectItem TValue="Guid" Value="@shelf.Id">
+                                        @shelf.ShelfName
+                                    </SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                        <Field>
+                            <FieldLabel>@L["Author"]</FieldLabel>
+                            <Select TValue="Guid" @bind-SelectedValue="@NewEntity.AuthorId">
+                                @foreach (var author in authorList)
+                                {
+                                    <SelectItem TValue="Guid" Value="@author.Id">
+                                        @author.Name
+                                    </SelectItem>
+                                }
+                            </Select>
+                        </Field>
 
-                        <Field>
-                            <FieldLabel>@L["Name"]</FieldLabel>
-                            <TextEdit @bind-Text="@NewEntity.Name">
-                                <Feedback>
-                                    <ValidationError/>
-                                </Feedback>
-                            </TextEdit>
-                        </Field>
-                    </Validation>
-                    <Field>
-                        <FieldLabel>@L["Bolum"]</FieldLabel>
-                        <Select TValue="BolumType" @bind-SelectedValue="@NewEntity.Bolum">
-                            @foreach (int bolumTypeValue in Enum.GetValues(typeof(BolumType)))
-                            {
-                                <SelectItem TValue="BolumType" Value="@((BolumType) bolumTypeValue)">
-                                    @L[$"Enum:BolumType.{bolumTypeValue}"]
-                                </SelectItem>
-                            }
-                        </Select>
+                        <Field>
+                            <FieldLabel>@L["Name"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewEntity.Name">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Field>
+                        <FieldLabel>@L["Bolum"]</FieldLabel>
+                        <Select TValue="BolumType" @bind-SelectedValue="@NewEntity.Bolum">
+                            @foreach (int bolumTypeValue in Enum.GetValues(typeof(BolumType)))
+                            {
+                                <SelectItem TValue="BolumType" Value="@((BolumType) bolumTypeValue)">
+                                    @L[$"Enum:BolumType.{bolumTypeValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
 
-                    </Field>
-                    <Field>
-                        <FieldLabel>@L["Type"]</FieldLabel>
-                        <Select TValue="BookType" @bind-SelectedValue="@NewEntity.Type">
-                            @foreach (int bookTypeValue in Enum.GetValues(typeof(BookType)))
-                            {
-                                <SelectItem TValue="BookType" Value="@((BookType) bookTypeValue)">
-                                    @L[$"Enum:BookType.{bookTypeValue}"]
-                                </SelectItem>
-                            }
-                        </Select>
-                    </Field>
-                    <Field>
-                        <FieldLabel>@L["PublishDate"]</FieldLabel>
-                        <DateEdit TValue="DateTime" @bind-Date="NewEntity.PublishDate"/>
-                    </Field>
-                    <Field>
-                        <FieldLabel>@L["Price"]</FieldLabel>
-                        <NumericEdit TValue="float" @bind-Value="NewEntity.Price"/>
-                    </Field>
-                    <Field>
-                        <FieldLabel>@L["Floor"]</FieldLabel>
-                        <Select TValue="FloorNumber" @bind-SelectedValue="@NewEntity.Floor">
-                            @foreach (int floorNumberValue in Enum.GetValues(typeof(FloorNumber)))
-                            {
-                                <SelectItem TValue="FloorNumber" Value="@((FloorNumber) floorNumberValue)">
-                                    @L[$"Enum:FloorNumber.Kat{floorNumberValue}"]
-                                </SelectItem>
-                            }
-                        </Select>
-                    </Field>
-                    @*<Field>
-                        <FieldLabel>@L["Image"]</FieldLabel>
-                        <InputFile TValue="float" @bind-Value="NewEntity.Price" />
-                    </Field>*@
-                </Validations>
-            </ModalBody>
-            <ModalFooter>
-                <Button Color="Color.Secondary"
-                        Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
-                <Button Color="Color.Primary"
-                        Type="@ButtonType.Submit"
-                        PreventDefaultOnSubmit="true"
-                        Clicked="CreateEntityAsync">@L["Save"]</Button>
-            </ModalFooter>
-        </Form>
-    </ModalContent>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["Type"]</FieldLabel>
+                        <Select TValue="BookType" @bind-SelectedValue="@NewEntity.Type">
+                            @foreach (int bookTypeValue in Enum.GetValues(typeof(BookType)))
+                            {
+                                <SelectItem TValue="BookType" Value="@((BookType) bookTypeValue)">
+                                    @L[$"Enum:BookType.{bookTypeValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["PublishDate"]</FieldLabel>
+                        <DateEdit TValue="DateTime" @bind-Date="NewEntity.PublishDate"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["Price"]</FieldLabel>
+                        <NumericEdit TValue="float" @bind-Value="NewEntity.Price"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["Floor"]</FieldLabel>
+                        <Select TValue="FloorNumber" @bind-SelectedValue="@NewEntity.Floor">
+                            @foreach (int floorNumberValue in Enum.GetValues(typeof(FloorNumber)))
+                            {
+                                <SelectItem TValue="FloorNumber" Value="@((FloorNumber) floorNumberValue)">
+                                    @L[$"Enum:FloorNumber.Kat{floorNumberValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["Statu"]</FieldLabel>
+                        <Select TValue="StatuType" @bind-SelectedValue="@NewEntity.BookStatu">
+                            @foreach (int bookStatuValue in Enum.GetValues(typeof(StatuType)))
+                            {
+                                <SelectItem TValue="StatuType" Value="@((StatuType) bookStatuValue)">
+                                    @L[$"Enum:StatuType.{bookStatuValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreateModalAsync">@L["Cancel"]</Button>
+                <Button Color="Color.Primary"
+                        Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true"
+                        Clicked="CreateEntityAsync">@L["Save"]</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
 </Modal>
 
-<Modal @ref="@EditModal">
-    <ModalBackdrop />
-    <ModalContent IsCentered="true">
-        <Form>
-            <ModalHeader>
-                <ModalTitle>@EditingEntity.Name</ModalTitle>
-                <CloseButton Clicked="CloseEditModalAsync"/>
-            </ModalHeader>
-            <ModalBody>
-                <Validations @ref="@EditValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
-                    <Validation MessageLocalizer="@LH.Localize">
-                        <Field>
-                          
-                            
-                            <FieldLabel>@L["Shelf"]</FieldLabel>
-                         
-                            <Select TValue="Guid" @bind-SelectedValue="@EditingEntity.ShelfId">
-                                
-                                @foreach (var shelf in shelfList)
-                                {
-                                 
-                                    <SelectItem TValue="Guid" Value="@shelf.Id">
-                                        @shelf.ShelfName
-                                       
-                                    </SelectItem>
-                                  
-                                }
-                            </Select>
-                           
-                        </Field>
+<Modal @ref="EditModal">
+    <ModalBackdrop />
+    <ModalContent IsCentered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@EditingEntity.Name</ModalTitle>
+                <CloseButton Clicked="CloseEditModalAsync"/>
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@EditValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                          
+                            
+                            <FieldLabel>@L["Shelf"]</FieldLabel>
+                         
+                            <Select TValue="Guid" @bind-SelectedValue="@EditingEntity.ShelfId">
+                                
+                                @foreach (var shelf in shelfList)
+                                {
+                                 
+                                    <SelectItem TValue="Guid" Value="@shelf.Id">
+                                        @shelf.ShelfName
+                                       
+                                    </SelectItem>
+                                  
+                                }
+                            </Select>
+                           
+                        </Field>
 
-                        <Field>
-                            <FieldLabel>@L["Author"]</FieldLabel>
-                            <Select TValue="Guid" @bind-SelectedValue="@EditingEntity.AuthorId">
-                                @foreach (var author in authorList)
-                                {
-                                    <SelectItem TValue="Guid" Value="@author.Id">
-                                        @author.Name
-                                    </SelectItem>
-                                }
-                            </Select>
-                        </Field>
+                        <Field>
+                            <FieldLabel>@L["Author"]</FieldLabel>
+                            <Select TValue="Guid" @bind-SelectedValue="@EditingEntity.AuthorId">
+                                @foreach (var author in authorList)
+                                {
+                                    <SelectItem TValue="Guid" Value="@author.Id">
+                                        @author.Name
+                                    </SelectItem>
+                                }
+                            </Select>
+                        </Field>
 
-                        <Field>
-                            <FieldLabel>@L["Name"]</FieldLabel>
-                            <TextEdit @bind-Text="@EditingEntity.Name">
-                                <Feedback>
-                                    <ValidationError/>
-                                </Feedback>
-                            </TextEdit>
-                        </Field>
-                    
-                  <Field>
-                 <FieldLabel>@L["Bolum"]</FieldLabel>
-                 
-                 <Select TValue="BolumType" @bind-Value="@EditingEntity.Bolum">
-                                @foreach (int bolumTypeValue in Enum.GetValues(typeof(BolumType)))
-                                {
-                                    <SelectItem TValue="BolumType" Value="@((BolumType) bolumTypeValue)">
-                                        @L[$"Enum:BolumType.{bolumTypeValue}"]
-                                    </SelectItem>
-                                }
-                     
-                       </Select>
-                     
-                    </Field>
-                    
+                        <Field>
+                            <FieldLabel>@L["Name"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingEntity.Name">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    
+                  <Field>
+                 <FieldLabel>@L["Bolum"]</FieldLabel>
+                 
+                 <Select TValue="BolumType" @bind-Value="@EditingEntity.Bolum">
+                                @foreach (int bolumTypeValue in Enum.GetValues(typeof(BolumType)))
+                                {
+                                    <SelectItem TValue="BolumType" Value="@((BolumType) bolumTypeValue)">
+                                        @L[$"Enum:BolumType.{bolumTypeValue}"]
+                                    </SelectItem>
+                                }
+                     
+                       </Select>
+                     
+                    </Field>
+                    
 
-                    <Field>
-                        <FieldLabel>@L["Type"]</FieldLabel>
-                        <Select TValue="BookType" @bind-SelectedValue="@EditingEntity.Type">
-                            @foreach (int bookTypeValue in Enum.GetValues(typeof(BookType)))
-                            {
-                                <SelectItem TValue="BookType" Value="@((BookType) bookTypeValue)">
-                                    @L[$"Enum:BookType.{bookTypeValue}"]
-                                </SelectItem>
-                            }
-                        </Select>
-                    </Field>
-                    <Field>
-                        <FieldLabel>@L["PublishDate"]</FieldLabel>
-                        <DateEdit TValue="DateTime" @bind-Date="EditingEntity.PublishDate"/>
-                    </Field>
-                    <Field>
-                        <FieldLabel>@L["Price"]</FieldLabel>
-                        <NumericEdit TValue="float" @bind-Value="EditingEntity.Price"/>
-                    </Field>
-                    <Field>
-                        <FieldLabel>@L["Floor"]</FieldLabel>
-                        <Select TValue="FloorNumber" @bind-SelectedValue="@EditingEntity.Floor">
-                            @foreach (int floorNumberValue in Enum.GetValues(typeof(FloorNumber)))
-                            {
-                                <SelectItem TValue="FloorNumber" Value="@((FloorNumber) floorNumberValue)">
-                                    @L[$"Enum:FloorNumber.Kat{floorNumberValue}"]
-                                </SelectItem>
-                            }
-                        </Select>
-                    </Field>
-                    </Validation>
-                </Validations>
-            </ModalBody>
-            <ModalFooter>
-                <Button Color="Color.Secondary"
-                        Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
-                <Button Color="Color.Primary"
-                        Type="@ButtonType.Submit"
-                        PreventDefaultOnSubmit="true"
-                        Clicked="UpdateEntityAsync">@L["Save"]</Button>
-            </ModalFooter>
-        </Form>
-    </ModalContent>
+                    <Field>
+                        <FieldLabel>@L["Type"]</FieldLabel>
+                        <Select TValue="BookType" @bind-SelectedValue="@EditingEntity.Type">
+                            @foreach (int bookTypeValue in Enum.GetValues(typeof(BookType)))
+                            {
+                                <SelectItem TValue="BookType" Value="@((BookType) bookTypeValue)">
+                                    @L[$"Enum:BookType.{bookTypeValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["PublishDate"]</FieldLabel>
+                        <DateEdit TValue="DateTime" @bind-Date="EditingEntity.PublishDate"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["Price"]</FieldLabel>
+                        <NumericEdit TValue="float" @bind-Value="EditingEntity.Price"/>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["Floor"]</FieldLabel>
+                        <Select TValue="FloorNumber" @bind-SelectedValue="@EditingEntity.Floor">
+                            @foreach (int floorNumberValue in Enum.GetValues(typeof(FloorNumber)))
+                            {
+                                <SelectItem TValue="FloorNumber" Value="@((FloorNumber) floorNumberValue)">
+                                    @L[$"Enum:FloorNumber.Kat{floorNumberValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                        <Field>
+                            <FieldLabel>@L["Statu"]</FieldLabel>
+                            <Select TValue="StatuType" @bind-SelectedValue="@EditingEntity.BookStatu">
+                                @foreach (int bookStatuValue in Enum.GetValues(typeof(StatuType)))
+                                {
+                                    <SelectItem TValue="StatuType" Value="@((StatuType) bookStatuValue)">
+                                        @L[$"Enum:StatuType.{bookStatuValue}"]
+                                    </SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                    </Validation>
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditModalAsync">@L["Cancel"]</Button>
+                <Button Color="Color.Primary"
+                        Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true"
+                        Clicked="UpdateEntityAsync">@L["Save"]</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
 </Modal>
 
 
-    @code
+    @code
 {
-    
-    private string searchText = "";
-    private IReadOnlyList<BookDto> filteredBooks = Array.Empty<BookDto>();
+    
+    private string searchText = "";
+    private IReadOnlyList<BookDto> filteredBooks = Array.Empty<BookDto>();
 
 
-    //ADDED A NEW FIELD
-    IReadOnlyList<AuthorLookupDto> authorList = Array.Empty<AuthorLookupDto>();
-    IReadOnlyList<ShelfLookupDto> shelfList = Array.Empty<ShelfLookupDto>();
+    //ADDED A NEW FIELD
+    IReadOnlyList<AuthorLookupDto> authorList = Array.Empty<AuthorLookupDto>();
+    IReadOnlyList<ShelfLookupDto> shelfList = Array.Empty<ShelfLookupDto>();
 
 
-    public Books() // Constructor
-    {
-        CreatePolicyName = LibraryDenemePermissions.Books.Create;
-        UpdatePolicyName = LibraryDenemePermissions.Books.Edit;
-        DeletePolicyName = LibraryDenemePermissions.Books.Delete;
-    }
+    public Books() // Constructor
+    {
+        CreatePolicyName = LibraryDenemePermissions.Books.Create;
+        UpdatePolicyName = LibraryDenemePermissions.Books.Edit;
+        DeletePolicyName = LibraryDenemePermissions.Books.Delete;
+    }
 
-    //GET AUTHORS ON INITIALIZATION
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        authorList = (await AppService.GetAuthorLookupAsync()).Items;
-        shelfList = (await AppService.GetShelfLookupAsync()).Items;
-        await LoadBooksAsync();
-    }
+    //GET AUTHORS ON INITIALIZATION
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        authorList = (await AppService.GetAuthorLookupAsync()).Items;
+        shelfList = (await AppService.GetShelfLookupAsync()).Items;
+        await LoadBooksAsync();
+    }
 
-    protected override async Task OpenCreateModalAsync()
-    {
-             if (!shelfList.Any())
-            {
-                throw new UserFriendlyException(message: L["AnShelfIsRequiredForCreatingBook"]);
-            
-            }
-           
-            if (!authorList.Any())
-            {
-                throw new UserFriendlyException(message: L["AnAuthorIsRequiredForCreatingBook"]);
-            }
+    protected override async Task OpenCreateModalAsync()
+    {
+             if (!shelfList.Any())
+            {
+                throw new UserFriendlyException(message: L["AnShelfIsRequiredForCreatingBook"]);
+            
+            }
+           
+            if (!authorList.Any())
+            {
+                throw new UserFriendlyException(message: L["AnAuthorIsRequiredForCreatingBook"]);
+            }
 
-            await base.OpenCreateModalAsync();
-            NewEntity.ShelfId = shelfList.First().Id;
-            NewEntity.AuthorId = authorList.First().Id;
-        }
-        private async Task SearchBooksAsync(ChangeEventArgs e )
-        {
-            searchText = e.Value.ToString();
+            await base.OpenCreateModalAsync();
+            NewEntity.ShelfId = shelfList.First().Id;
+            NewEntity.AuthorId = authorList.First().Id;
+        }
+        private async Task SearchBooksAsync(ChangeEventArgs e )
+        {
+            searchText = e.Value.ToString();
 
-            if (string.IsNullOrEmpty(searchText))
-            {
-                // Reset to all books if search text is empty
-                filteredBooks = Entities;
-                return;
-            }
+            if (string.IsNullOrEmpty(searchText))
+            {
+                // Reset to all books if search text is empty
+                filteredBooks = Entities;
+                return;
+            }
 
-            filteredBooks = Entities.Where(book => book.Name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
-                                                    book.AuthorName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
-                                      .ToList(); // Create a filtered copy
-        }
-        private async Task LoadBooksAsync()
-        {
-            var result = await AppService.GetListAsync(new PagedAndSortedResultRequestDto());
-            Entities = result.Items;
-            filteredBooks = Entities; // Initially show all books
-        }
+            filteredBooks = Entities.Where(book => book.Name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
+                                                    book.AuthorName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                                      .ToList(); // Create a filtered copy
+        }
+        private async Task LoadBooksAsync()
+        {
+            var result = await AppService.GetListAsync(new PagedAndSortedResultRequestDto());
+            Entities = result.Items;
+            filteredBooks = Entities; // Initially show all books
+        }
 
-    
+    
 
 }
-       
-
-

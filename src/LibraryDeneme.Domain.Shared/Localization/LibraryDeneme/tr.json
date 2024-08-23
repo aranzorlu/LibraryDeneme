@@ -119,7 +119,11 @@
     "Enum:BolumType.0": "X Kütüphanesi",
     "Enum:BolumType.1": "Y Kütüphanesi",
     "Enum:BolumType.XKütüphanesi": "X Kütüphanesi",
-    "Enum:BolumType.YKütüphanesi": "Y Kütüphanesi"
+    "Enum:BolumType.YKütüphanesi": "Y Kütüphanesi",
+    "Enum:BookStatu.Active": "Active",
+    "Enum:BookStatu.Inactive": "Inactive",
+    "Enum:StatuType.0": "Active",
+    "Enum:StatuType.1": "Inactive"
 
 
   }

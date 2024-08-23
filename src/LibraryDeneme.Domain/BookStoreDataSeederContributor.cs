@@ -85,7 +85,8 @@ public class LibraryDenemeDataSeederContributor
                 PublishDate = new DateTime(1949, 6, 8),
                 Price = 19.84f,
                 Floor = FloorNumber.Kat1,
-                Bolum = BolumType.XKütüphanesi
+                Bolum = BolumType.XKütüphanesi,
+                BookStatu = StatuType.Active
             },
             autoSave: true
         );
@@ -100,7 +101,8 @@ public class LibraryDenemeDataSeederContributor
                 PublishDate = new DateTime(1995, 9, 27),
                 Price = 42.0f,
                 Floor = FloorNumber.Kat1,
-                Bolum = BolumType.YKütüphanesi
+                Bolum = BolumType.YKütüphanesi,
+                BookStatu = StatuType.Inactive
             },
             autoSave: true
         );

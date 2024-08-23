@@ -437,6 +437,7 @@ namespace LibraryDeneme.Migrations
                     Price = table.Column<float>(type: "real", nullable: false),
                     Floor = table.Column<int>(type:"int", nullable: false),
                     Bolum = table.Column<int>(type: "int", nullable: false),
+                    BookStatu = table.Column<int>(type:"int",nullable: false),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),

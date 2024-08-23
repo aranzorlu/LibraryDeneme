@@ -3,10 +3,11 @@
     display: flex;
     justify-content: flex-end;
     
+    
 }
 
 .input-container {
-    width: 300px;
+    width: 1300px;
     position: relative;
 }
 
