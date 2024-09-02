@@ -17,7 +17,6 @@ using LibraryDeneme.EntityFrameworkCore;
 using LibraryDeneme.Localization;
 using LibraryDeneme.MultiTenancy;
 using Microsoft.OpenApi.Models;
-using LibraryDeneme.Blazor.Components.Layout;
 using Volo.Abp;
 using Volo.Abp.Account.Web;
 using Volo.Abp.AspNetCore.Components.Web.Theming.Routing;
@@ -45,6 +44,10 @@ using Volo.Abp.UI.Navigation;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.Studio.Client.AspNetCore;
+using Volo.Abp.Ui.LayoutHooks;
+using Blazorise;
+using Volo.Abp.AspNetCore.Components.Web.Theming.Layout;
+using LibraryDeneme.Blazor.Components;
 
 
 namespace LibraryDeneme.Blazor;
@@ -126,6 +129,7 @@ public class LibraryDenemeBlazorModule : AbpModule
                 options.DisableTransportSecurityRequirement = true;
             });
         }
+        
 
         ConfigureAuthentication(context);
         ConfigureUrls(configuration);

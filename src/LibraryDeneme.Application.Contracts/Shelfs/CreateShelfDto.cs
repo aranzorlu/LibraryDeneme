@@ -1,4 +1,5 @@
 ﻿using LibraryDeneme.Authors;
+using LibraryDeneme.Books;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,5 +17,9 @@ namespace LibraryDeneme.Shelfs
 
         [Required]
         public SType ShelfType { get; set; }
+
+        [Required]
+
+        public BolumType ShelfBolum {  get; set; }
     }
 }

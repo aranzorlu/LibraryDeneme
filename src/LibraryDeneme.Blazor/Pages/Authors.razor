@@ -104,60 +104,59 @@
 </Card>
 
 <Modal @ref="CreateAuthorModal">
-    <ModalBackdrop />
-    <ModalContent IsCentered="true">
-        <Form>
-            <ModalHeader>
-                <ModalTitle>@L["NewAuthor"]</ModalTitle>
-                <CloseButton Clicked="CloseCreateAuthorModal" />
-            </ModalHeader>
-            <ModalBody>
-                <Validations @ref="@CreateValidationsRef" Model="@NewAuthor" ValidateOnLoad="false">
-                    <Validation MessageLocalizer="@LH.Localize">
-                        <Field>
-                            <FieldLabel>@L["Name"]</FieldLabel>
-                            <TextEdit @bind-Text="@NewAuthor.Name">
-                                <Feedback>
-                                    <ValidationError/>
-                                </Feedback>
-                            </TextEdit>
-                        </Field>
-                    </Validation>
-                    <Field>
-                        <FieldLabel>@L["BirthDate"]</FieldLabel>
-                        <DateEdit TValue="DateTime" @bind-Date="@NewAuthor.BirthDate"/>
-                    </Field>
-                    <Validation MessageLocalizer="@LH.Localize">
-                        <Field>
-                            <FieldLabel>@L["ShortBio"]</FieldLabel>
-                            <MemoEdit Rows="5" @bind-Text="@NewAuthor.ShortBio">
-                                <Feedback>
-                                    <ValidationError/>
-                                </Feedback>
-                            </MemoEdit>
-                        </Field>
-                    </Validation>
-                </Validations>
-            </ModalBody>
-            <ModalFooter>
-                <Button Color="Color.Secondary"
-                        Clicked="CloseCreateAuthorModal">
-                    @L["Cancel"]
-                </Button>
-                <Button Color="Color.Primary"
-                        Type="@ButtonType.Submit"
-                        PreventDefaultOnSubmit="true"
-                        Clicked="CreateAuthorAsync">
-                    @L["Save"]
-                </Button>
-            </ModalFooter>
-        </Form>
-    </ModalContent>
+	
+		<ModalContent Centered="true">
+			<Form>
+				<ModalHeader>
+					<ModalTitle>@L["NewAuthor"]</ModalTitle>
+					<CloseButton Clicked="CloseCreateAuthorModal" />
+				</ModalHeader>
+				<ModalBody>
+					<Validations @ref="@CreateValidationsRef" Model="@NewAuthor" ValidateOnLoad="false">
+						<Validation MessageLocalizer="@LH.Localize">
+							<Field>
+								<FieldLabel>@L["Name"]</FieldLabel>
+								<TextEdit @bind-Text="@NewAuthor.Name">
+									<Feedback>
+										<ValidationError />
+									</Feedback>
+								</TextEdit>
+							</Field>
+						</Validation>
+						<Field>
+							<FieldLabel>@L["BirthDate"]</FieldLabel>
+							<DateEdit TValue="DateTime" @bind-Date="@NewAuthor.BirthDate" />
+						</Field>
+						<Validation MessageLocalizer="@LH.Localize">
+							<Field>
+								<FieldLabel>@L["ShortBio"]</FieldLabel>
+								<MemoEdit Rows="5" @bind-Text="@NewAuthor.ShortBio">
+									<Feedback>
+										<ValidationError />
+									</Feedback>
+								</MemoEdit>
+							</Field>
+						</Validation>
+					</Validations>
+				</ModalBody>
+				<ModalFooter>
+					<Button Color="Color.Secondary"
+							Clicked="CloseCreateAuthorModal">
+						@L["Cancel"]
+					</Button>
+					<Button Color="Color.Primary"
+							Type="@ButtonType.Submit"
+							PreventDefaultOnSubmit="true"
+							Clicked="CreateAuthorAsync">
+						@L["Save"]
+					</Button>
+				</ModalFooter>
+			</Form>
+		</ModalContent>  
 </Modal>
 
 <Modal @ref="EditAuthorModal">
-    <ModalBackdrop />
-    <ModalContent IsCentered="true">
+    <ModalContent Centered="true">
         <Form>
             <ModalHeader>
                         <ModalTitle>@EditingAuthor.Name</ModalTitle>

@@ -1,0 +1,94 @@
+﻿@page "/yshelfs"
+@using LibraryDeneme.Shelfs
+@using LibraryDeneme.Localization
+@using Volo.Abp.AspNetCore.Components.Web
+@using Volo.Abp.Application.Dtos
+@using LibraryDeneme.Books
+@inherits LibraryDenemeComponentBase
+@inject IShelfAppService ShelfAppService
+@inject AbpBlazorMessageLocalizerHelper<LibraryDenemeResource> LH
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h2>@L["YShelfs"]</h2>
+            </Column>
+
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="ShelfDto"
+                  Data="ShelfList"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridColumn TItem="ShelfDto"
+                                Field="@nameof(ShelfDto.ShelfName)"
+                                Caption="@L["Name"]"></DataGridColumn>
+                <DataGridColumn TItem="ShelfDto"
+                                Field="@nameof(ShelfDto.ShelfType)"
+                                Caption="@L["ShelfType"]">
+                    <DisplayTemplate>
+                        @L[$"Enum:SType.{context.ShelfType}"]
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="ShelfDto"
+                                Field="@nameof(ShelfDto.ShelfBolum)"
+                                Caption="@L["Bolum"]">
+                    <DisplayTemplate>
+                        @L[$"Enum:BolumType.{context.ShelfBolum}"]
+                    </DisplayTemplate>
+                </DataGridColumn>
+
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+@code {
+    private IReadOnlyList<ShelfDto> ShelfList = Array.Empty<ShelfDto>();
+
+    public BolumType LibraryName = BolumType.YKütüphanesi;
+
+    public int PageSize { get; } = LimitedResultRequestDto.DefaultMaxResultCount;
+
+    public int TotalCount { get; set; }
+
+    public int CurrentPage { get; set; }
+
+    public string CurrentSorting { get; set; }
+
+    [AllowAnonymous]
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadShelfsAsync();
+    }
+    [AllowAnonymous]
+    public async Task OnDataGridReadAsync(DataGridReadDataEventArgs<ShelfDto> e)
+    {
+        CurrentSorting = e.Columns
+            .Where(c => c.SortDirection != SortDirection.Default)
+            .Select(c => c.Field + (c.SortDirection == SortDirection.Descending ? " DESC" : ""))
+            .JoinAsString(",");
+
+        CurrentPage = e.Page - 1;
+        await LoadShelfsAsync();
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    [AllowAnonymous]
+    private async Task LoadShelfsAsync()
+    {
+        var result = await ShelfAppService.GetShelfsByLibraryAsync(LibraryName, new PagedAndSortedResultRequestDto
+            {
+                MaxResultCount = PageSize,
+                SkipCount = CurrentPage * PageSize,
+                Sorting = CurrentSorting
+            });
+
+        ShelfList = result.Items;
+        TotalCount = (int)result.TotalCount;
+    }
+}

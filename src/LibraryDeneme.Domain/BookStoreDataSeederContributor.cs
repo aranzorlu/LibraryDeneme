@@ -48,14 +48,16 @@ public class LibraryDenemeDataSeederContributor
         var a100 = await _shelfRepository.InsertAsync(
             await _shelfManager.CreateAsync(
                 "a100",
-                SType.Dystopia
+                SType.Dystopia,
+                BolumType.XKütüphanesi
             )
         );
 
         var a200 = await _shelfRepository.InsertAsync(
             await _shelfManager.CreateAsync(
                  "a200",
-                 SType.ScienceFiction
+                 SType.ScienceFiction,
+                 BolumType.XKütüphanesi
             )
         );
 

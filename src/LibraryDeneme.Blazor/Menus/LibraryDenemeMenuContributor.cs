@@ -9,12 +9,16 @@ using Volo.Abp.TenantManagement.Blazor.Navigation;
 using Volo.Abp.Identity.Blazor;
 using LibraryDeneme.Authors;
 using NUglify.JavaScript.Syntax;
+using LibraryDeneme.Books;
+using Blazorise;
 
 namespace LibraryDeneme.Blazor.Menus;
 
 public class LibraryDenemeMenuContributor : IMenuContributor
 {
-    public async Task ConfigureMenuAsync(MenuConfigurationContext context)
+    
+
+	public async Task ConfigureMenuAsync(MenuConfigurationContext context)
     {
         if (context.Menu.Name == StandardMenus.Main)
         {
@@ -72,18 +76,12 @@ public class LibraryDenemeMenuContributor : IMenuContributor
                 url: "/xbooks"
                 )
                 )
-                .AddItem(
-                new ApplicationMenuItem(
-                 "BooksStore.Books.Book",
-                 l["Menu:Readers"],
-                 url: "/readers")
-
-                )
+                
 
                 .AddItem(new ApplicationMenuItem(
                    "BookStore.Books.Shelfs",
                     l["Menu:Shelfs"],
-                    url: "/shelfs")
+                    url: "/xshelfs")
                 )
                 
                  
@@ -103,7 +101,7 @@ public class LibraryDenemeMenuContributor : IMenuContributor
              .AddItem(new ApplicationMenuItem(
                  "Booksotre.Books.Book",
                  l["Menu:YShelfs"],
-                 url:"/shelfs"
+                 url:"/yshelfs"
                  )
              )
              
@@ -122,7 +120,9 @@ public class LibraryDenemeMenuContributor : IMenuContributor
             context.Menu.AddItem(new ApplicationMenuItem(
                 "BookStore.Authors",
                 l["Menu:Authors"],
-                url: "/authors")
+                url: "/authors",
+                icon: "fas fa-user")
+
                 );
         }
         if (await context.IsGrantedAsync(LibraryDenemePermissions.Shelfs.Default))
@@ -130,7 +130,8 @@ public class LibraryDenemeMenuContributor : IMenuContributor
             context.Menu.AddItem(new ApplicationMenuItem(
                 "BookStore.Shelfs",
                 l["Menu:Shelfs"],
-                url: "/shelfs")
+                url: "/shelfs",
+                icon:"fas fa-bookmark")
                 );
         }
         if (await context.IsGrantedAsync(LibraryDenemePermissions.Books.Default))
@@ -138,8 +139,11 @@ public class LibraryDenemeMenuContributor : IMenuContributor
             context.Menu.AddItem(new ApplicationMenuItem(
                 "BookStore.Books",
                 l["Menu:Books"],
-                url: "/books")
+                url: "/books",
+                icon:"fas fa-book")
                 );
         }
-    }
+	
+	}
+
 }

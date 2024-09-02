@@ -6,10 +6,12 @@
 @using Microsoft.Extensions.Localization
 @using Volo.Abp.AspNetCore.Components.Web
 @using LibraryDeneme.Permissions
+@using LibraryDeneme.Blazor.Components
 @inject IStringLocalizer<LibraryDenemeResource> L
 @inject AbpBlazorMessageLocalizerHelper<LibraryDenemeResource> LH
 @inherits AbpCrudPageBase<IBookAppService, BookDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateBookDto>
 
+  
 <Card>
     <CardHeader>
         <Row Class="justify-content-between">
@@ -45,16 +47,16 @@
                   ShowPager="true"
                   PageSize="PageSize">
             <DataGridColumns>
-                <DataGridEntityActionsColumn TItem="BookDto" @ref="@EntityActionsColumn">
+                <DataGridEntityActionsColumn TItem="BookDto"Width="50px" @ref="@EntityActionsColumn">
                     <DisplayTemplate>
-                        <EntityActions TItem="BookDto" EntityActionsColumn="@EntityActionsColumn">
+                        <EntityActions TItem="BookDto"  EntityActionsColumn="@EntityActionsColumn">
                             <EntityAction TItem="BookDto"
                                           Text="@L["Edit"]"
-                                          Clicked="() => OpenEditModalAsync(context)" />
+                                          Clicked="() => OpenEditModalAsync(context)"/>
                             <EntityAction TItem="BookDto"
                                           Text="@L["Delete"]"
                                           Clicked="() => DeleteEntityAsync(context)"
-                                          ConfirmationMessage="()=>GetDeleteConfirmationMessage(context)" />
+                                          ConfirmationMessage="()=>GetDeleteConfirmationMessage(context)"/>
                         </EntityActions>
                     </DisplayTemplate>
                 </DataGridEntityActionsColumn>
@@ -169,7 +171,7 @@
 
 <Modal @ref="CreateModal">
     <ModalBackdrop />
-    <ModalContent IsCentered="true">
+    <ModalContent Centered="true">
         <Form>
             <ModalHeader>
                
@@ -281,7 +283,7 @@
 
 <Modal @ref="EditModal">
     <ModalBackdrop />
-    <ModalContent IsCentered="true">
+    <ModalContent Centered="true">
         <Form>
             <ModalHeader>
                 <ModalTitle>@EditingEntity.Name</ModalTitle>
@@ -404,66 +406,67 @@
 </Modal>
 
 
-    @code
+@code
 {
-    
-    private string searchText = "";
-    private IReadOnlyList<BookDto> filteredBooks = Array.Empty<BookDto>();
+
+    private string searchText = "";
+    private IReadOnlyList<BookDto> filteredBooks = Array.Empty<BookDto>();
 
 
-    //ADDED A NEW FIELD
-    IReadOnlyList<AuthorLookupDto> authorList = Array.Empty<AuthorLookupDto>();
-    IReadOnlyList<ShelfLookupDto> shelfList = Array.Empty<ShelfLookupDto>();
+    //ADDED A NEW FIELD
+    IReadOnlyList<AuthorLookupDto> authorList = Array.Empty<AuthorLookupDto>();
+    IReadOnlyList<ShelfLookupDto> shelfList = Array.Empty<ShelfLookupDto>();
 
 
-    public Books() // Constructor
-    {
-        CreatePolicyName = LibraryDenemePermissions.Books.Create;
-        UpdatePolicyName = LibraryDenemePermissions.Books.Edit;
-        DeletePolicyName = LibraryDenemePermissions.Books.Delete;
-    }
+    public Books() // Constructor
+    {
+        CreatePolicyName = LibraryDenemePermissions.Books.Create;
+        UpdatePolicyName = LibraryDenemePermissions.Books.Edit;
+        DeletePolicyName = LibraryDenemePermissions.Books.Delete;
+    }
 
-    //GET AUTHORS ON INITIALIZATION
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        authorList = (await AppService.GetAuthorLookupAsync()).Items;
-        shelfList = (await AppService.GetShelfLookupAsync()).Items;
-        await LoadBooksAsync();
-    }
+    //GET AUTHORS ON INITIALIZATION
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        authorList = (await AppService.GetAuthorLookupAsync()).Items;
+        shelfList = (await AppService.GetShelfLookupAsync()).Items;
+        await LoadBooksAsync();
+    }
 
-    protected override async Task OpenCreateModalAsync()
-    {
-             if (!shelfList.Any())
-            {
-                throw new UserFriendlyException(message: L["AnShelfIsRequiredForCreatingBook"]);
-            
-            }
-           
-            if (!authorList.Any())
-            {
-                throw new UserFriendlyException(message: L["AnAuthorIsRequiredForCreatingBook"]);
-            }
+    protected override async Task OpenCreateModalAsync()
+    {
+        if (!shelfList.Any())
+        {
+            throw new UserFriendlyException(message: L["AnShelfIsRequiredForCreatingBook"]);
 
-            await base.OpenCreateModalAsync();
-            NewEntity.ShelfId = shelfList.First().Id;
-            NewEntity.AuthorId = authorList.First().Id;
-        }
-        private async Task SearchBooksAsync(ChangeEventArgs e )
-        {
-            searchText = e.Value.ToString();
+        }
 
-            if (string.IsNullOrEmpty(searchText))
-            {
-                // Reset to all books if search text is empty
-                filteredBooks = Entities;
-                return;
-            }
+        if (!authorList.Any())
+        {
+            throw new UserFriendlyException(message: L["AnAuthorIsRequiredForCreatingBook"]);
+        }
 
-            filteredBooks = Entities.Where(book => book.Name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
-                                                    book.AuthorName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
-                                      .ToList(); // Create a filtered copy
-        }
+        await base.OpenCreateModalAsync();
+        NewEntity.ShelfId = shelfList.First().Id;
+        NewEntity.AuthorId = authorList.First().Id;
+    }
+    private async Task SearchBooksAsync(ChangeEventArgs e )
+    {
+        searchText = e.Value.ToString();
+
+        if (string.IsNullOrEmpty(searchText))
+        {
+            // Reset to all books if search text is empty
+            filteredBooks = Entities;
+            return;
+        }
+
+        filteredBooks = Entities.Where(book => book.Name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
+                            book.AuthorName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                     .ToList(); // Create a filtered copy
+        
+    }
         private async Task LoadBooksAsync()
         {
             var result = await AppService.GetListAsync(new PagedAndSortedResultRequestDto());

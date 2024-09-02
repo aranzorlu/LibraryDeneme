@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using LibraryDeneme.Books;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.Emailing;
@@ -17,6 +18,8 @@ namespace LibraryDeneme.Shelfs
 
         public SType ShelfType { get; set; }
 
+        public BolumType ShelfBolum { get; set; }
+
         private Shelf()
         {
 
@@ -24,11 +27,13 @@ namespace LibraryDeneme.Shelfs
         internal Shelf(
             Guid id,
             string shelfname,
-            SType shelftype)
+            SType shelftype,
+            BolumType shelfbolum)
             : base(id)
         {
             SetName(shelfname);
             ShelfType = shelftype;
+            ShelfBolum = shelfbolum;
 
         }
         internal Shelf ChangeName(string shelfname)

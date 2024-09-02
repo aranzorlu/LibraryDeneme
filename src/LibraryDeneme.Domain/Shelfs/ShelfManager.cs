@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-
+using LibraryDeneme.Books;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
@@ -18,7 +18,8 @@ public class ShelfManager : DomainService
 
     public async Task<Shelf> CreateAsync(
         string shelfname,
-        SType shelftype)
+        SType shelftype,
+        BolumType shelfbolum)
         
     {
         Check.NotNullOrWhiteSpace(shelfname, nameof(shelfname));
@@ -32,7 +33,8 @@ public class ShelfManager : DomainService
         return new Shelf(
             GuidGenerator.Create(),
             shelfname,
-            shelftype
+            shelftype,
+            shelfbolum
             
         );
     }

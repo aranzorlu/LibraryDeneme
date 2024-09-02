@@ -2,6 +2,7 @@
 @using LibraryDeneme.Shelfs
 @using LibraryDeneme.Localization
 @using Volo.Abp.AspNetCore.Components.Web
+@using LibraryDeneme.Books
 @inherits LibraryDenemeComponentBase
 @inject IShelfAppService ShelfAppService
 @inject AbpBlazorMessageLocalizerHelper<LibraryDenemeResource> LH
@@ -68,6 +69,13 @@
                     </DisplayTemplate>
                 </DataGridColumn>
                 <DataGridColumn TItem="ShelfDto"
+                                Field="@nameof(ShelfDto.ShelfBolum)"
+                                Caption="@L["Bolum"]">
+                    <DisplayTemplate>
+                        @L[$"Enum:BolumType.{context.ShelfBolum}"]
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="ShelfDto"
                                 Field="@nameof(ShelfDto.CreationTime)"
                                 Caption="@L["CreationTime"]">
                     <DisplayTemplate>
@@ -98,8 +106,7 @@
 </Card>
 
 <Modal @ref="CreateShelfModal">
-    <ModalBackdrop />
-    <ModalContent IsCentered="true">
+    <ModalContent Centered="true">
         <Form>
             <ModalHeader>
                 <ModalTitle>@L["NewShelf"]</ModalTitle>
@@ -129,6 +136,18 @@
                             }
                         </Select>
                     </Field>
+                <Field>
+                    <FieldLabel>@L["Bolum"]</FieldLabel>
+                    <Select TValue="BolumType" @bind-SelectedValue="@NewShelf.ShelfBolum">
+                        @foreach (int bolumTypeValue in Enum.GetValues(typeof(BolumType)))
+                        {
+                            <SelectItem TValue="BolumType" Value="@((BolumType) bolumTypeValue)">
+                                @L[$"Enum:BolumType.{bolumTypeValue}"]
+                            </SelectItem>
+                        }
+                    </Select>
+
+                </Field>
                    
             </ModalBody>
             <ModalFooter>
@@ -148,8 +167,7 @@
 </Modal>
 
 <Modal @ref="EditShelfModal">
-    <ModalBackdrop />
-    <ModalContent IsCentered="true">
+    <ModalContent Centered="true">
         <Form>
             <ModalHeader>
                         <ModalTitle>@EditingShelf.ShelfName</ModalTitle>
@@ -179,6 +197,18 @@
                             }
                         </Select>
                     </Field>
+                <Field>
+                    <FieldLabel>@L["Bolum"]</FieldLabel>
+                    <Select TValue="BolumType" @bind-SelectedValue="@EditingShelf.ShelfBolum">
+                        @foreach (int bolumTypeValue in Enum.GetValues(typeof(BolumType)))
+                        {
+                            <SelectItem TValue="BolumType" Value="@((BolumType) bolumTypeValue)">
+                                @L[$"Enum:BolumType.{bolumTypeValue}"]
+                            </SelectItem>
+                        }
+                    </Select>
+
+                </Field>
             </ModalBody>
             <ModalFooter>
                 <Button Color="Color.Secondary"

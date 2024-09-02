@@ -19,6 +19,7 @@ namespace LibraryDeneme.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ShelfName = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     ShelfType = table.Column<int>(type: "int", nullable: false),
+                    ShelfBolum = table.Column<int>(type: "int",nullable: false),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),

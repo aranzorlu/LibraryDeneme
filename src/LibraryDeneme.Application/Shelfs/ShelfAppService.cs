@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryDeneme.Authors;
+using LibraryDeneme.Books;
 using LibraryDeneme.Permissions;
 
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
+using System.Linq.Dynamic.Core;
 
 namespace LibraryDeneme.Shelfs;
 
@@ -18,8 +20,10 @@ public class ShelfAppService : LibraryDenemeAppService, IShelfAppService
     private readonly ShelfManager _shelfManager;
 
     public ShelfAppService(
+        IRepository<Book, Guid> repository,
         IShelfRepository shelfRepository,
         ShelfManager shelfManager)
+        
     {
         _shelfRepository = shelfRepository;
         _shelfManager = shelfManager;
@@ -29,6 +33,7 @@ public class ShelfAppService : LibraryDenemeAppService, IShelfAppService
         var shelf = await _shelfRepository.GetAsync(id);
         return ObjectMapper.Map<Shelf, ShelfDto>(shelf);
     }
+    [AllowAnonymous]
     public async Task<PagedResultDto<ShelfDto>> GetListAsync(GetShelfListDto input)
     {
         if (input.Sorting.IsNullOrWhiteSpace())
@@ -58,7 +63,9 @@ public class ShelfAppService : LibraryDenemeAppService, IShelfAppService
     {
         var shelf = await _shelfManager.CreateAsync(
             input.ShelfName,
-            input.ShelfType
+            input.ShelfType,
+            input.ShelfBolum
+            
         );
 
         await _shelfRepository.InsertAsync(shelf);
@@ -85,6 +92,30 @@ public class ShelfAppService : LibraryDenemeAppService, IShelfAppService
     public async Task DeleteAsync(Guid id)
     {
         await _shelfRepository.DeleteAsync(id);
+    }
+    [AllowAnonymous]
+    public async Task<PagedResultDto<ShelfDto>> GetShelfsByLibraryAsync(BolumType libraryName, PagedAndSortedResultRequestDto input)
+    {
+        if (input.Sorting.IsNullOrWhiteSpace())
+        {
+            input.Sorting = nameof(Shelf.ShelfName); // Varsayılan sıralama kriteri
+        }
+        // Get the IQueryable<Book> from the repository
+        var queryable = await _shelfRepository.GetQueryableAsync();
+        var query = queryable.Where(shelf => shelf.ShelfBolum == libraryName);
+
+        var shelfs = await AsyncExecuter.ToListAsync(
+            query.OrderBy(input.Sorting)
+                 .Skip(input.SkipCount)
+                 .Take(input.MaxResultCount)
+        );
+
+        var totalCount = await AsyncExecuter.CountAsync(query);
+
+        return new PagedResultDto<ShelfDto>(
+            totalCount,
+            ObjectMapper.Map<List<Shelf>, List<ShelfDto>>(shelfs)
+        );
     }
 
     //...SERVICE METHODS WILL COME HERE...

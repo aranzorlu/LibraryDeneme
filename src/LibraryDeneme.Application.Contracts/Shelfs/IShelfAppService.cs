@@ -1,4 +1,5 @@
 ﻿
+using LibraryDeneme.Books;
 using System;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
@@ -17,4 +18,5 @@ public interface IShelfAppService : IApplicationService
     Task UpdateAsync(Guid id, UpdateShelfDto input);
 
     Task DeleteAsync(Guid id);
+    Task<PagedResultDto<ShelfDto>> GetShelfsByLibraryAsync(BolumType libraryName, PagedAndSortedResultRequestDto input);
 }

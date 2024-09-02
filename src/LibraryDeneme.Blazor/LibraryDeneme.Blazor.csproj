@@ -64,6 +64,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Readers.razor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Pages\Readers.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Pages\Readers.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Pages\**\*.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

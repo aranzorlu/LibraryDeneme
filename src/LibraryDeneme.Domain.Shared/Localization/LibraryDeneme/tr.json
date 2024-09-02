@@ -123,7 +123,11 @@
     "Enum:BookStatu.Active": "Active",
     "Enum:BookStatu.Inactive": "Inactive",
     "Enum:StatuType.0": "Active",
-    "Enum:StatuType.1": "Inactive"
+    "Enum:StatuType.1": "Inactive",
+    "XShelfs": "X Kütüphanesi Raflar",
+    "YShelfs": "Y Kütüphanesi Raflar",
+    "XBooks": "X Kütüphanesi Kitaplar",
+    "YBooks": "Y Kütüphanesi Kitaplar"
 
 
   }

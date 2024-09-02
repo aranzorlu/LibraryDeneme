@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LibraryDeneme.Books;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,8 @@ namespace LibraryDeneme.Shelfs
         public string ShelfName { get; set; }
 
         public SType ShelfType { get; set; }
+
+        public BolumType ShelfBolum {  get; set; }
 
        
     }
