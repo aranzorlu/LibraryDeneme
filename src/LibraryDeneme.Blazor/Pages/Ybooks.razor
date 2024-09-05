@@ -1,4 +1,4 @@
-﻿@page "/ybooks"
+﻿@*@page "/ybooks"
 
 @using Volo.Abp.Application.Dtos
 @using LibraryDeneme.Books
@@ -158,7 +158,7 @@
         authorList = (await AppService.GetAuthorLookupAsync()).Items;
         shelfList = (await AppService.GetShelfLookupAsync()).Items;
 
-        await LoadBooksAsync();
+       // await LoadBooksAsync();
     }
     [AllowAnonymous]
     private async Task SearchBooksAsync(ChangeEventArgs e)
@@ -176,13 +176,13 @@
                                                 book.AuthorName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
                                   .ToList(); // Create a filtered copy
     }
-    [AllowAnonymous]
+   /* [AllowAnonymous]
     private async Task LoadBooksAsync()
     {
         books = await BookAppService.GetBooksByLibraryAsync(LibraryName, new PagedAndSortedResultRequestDto());
 
         // Sonuçları filtrelenmiş kitap listesine atayın
         filteredBooks = books.Items;
-    }
+    }*/
 
-}
+}*@

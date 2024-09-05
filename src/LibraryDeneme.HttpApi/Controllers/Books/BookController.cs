@@ -7,9 +7,9 @@ using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Application.Dtos;
 
-namespace LibraryDeneme.Controllers.Books
-{
-    [RemoteService]
+namespace LibraryDeneme.Controllers.Books;
+
+  /*  [RemoteService]
     [Area("app")]
     [ControllerName("Book")]
     [Route("api/app/books")]
@@ -56,4 +56,4 @@ namespace LibraryDeneme.Controllers.Books
             return _booksAppService.DeleteAsync(id);
         }
     }
-}
+}*/

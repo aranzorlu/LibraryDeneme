@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
-namespace LibraryDeneme.Books
+namespace LibraryDeneme.Inventorys
 {
     public class ShelfLookupDto : EntityDto<Guid>
     {

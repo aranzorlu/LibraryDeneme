@@ -3,24 +3,22 @@ using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Microsoft.AspNetCore.Authorization;
+using LibraryDeneme.Authors;
 
 namespace LibraryDeneme.Books;
 
-public interface IBookAppService :
-    ICrudAppService< //Defines CRUD methods
-        BookDto, //Used to show books
-        Guid, //Primary key of the book entity
-        PagedAndSortedResultRequestDto, //Used for paging/sorting
-        CreateUpdateBookDto> //Used to create/update a book
-        
-
+public interface IBookAppService : IApplicationService
 {
-    [AllowAnonymous]
+    Task<BookDto> GetAsync(Guid id);
+
+    Task<PagedResultDto<BookDto>> GetListAsync(GetBookListDto input);
+
+    Task<BookDto> CreateAsync(CreateBookDto input);
+
+    Task UpdateAsync(Guid id, UpdateBookDto input);
+
+    Task DeleteAsync(Guid id);
+
     Task<ListResultDto<AuthorLookupDto>> GetAuthorLookupAsync();
-
-    [AllowAnonymous]
-    Task<ListResultDto<ShelfLookupDto>> GetShelfLookupAsync();
-    [AllowAnonymous]
-    Task<PagedResultDto<BookDto>> GetBooksByLibraryAsync(BolumType libraryName, PagedAndSortedResultRequestDto input);
-
+    
 }

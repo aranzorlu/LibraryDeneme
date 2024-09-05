@@ -1,14 +1,16 @@
-﻿@page "/xbooks"
-
+﻿@*@page "/xbooks"
+@using Volo.Abp
 @using Volo.Abp.Application.Dtos
 @using LibraryDeneme.Books
 @using LibraryDeneme.Localization
 @using Microsoft.Extensions.Localization
 @using Volo.Abp.AspNetCore.Components.Web
+@using LibraryDeneme.Permissions
+@using LibraryDeneme.Blazor.Components
+@inherits LibraryDenemeComponentBase
 @inject IBookAppService BookAppService
-@inject IStringLocalizer<LibraryDenemeResource> L
 @inject AbpBlazorMessageLocalizerHelper<LibraryDenemeResource> LH
-@inherits AbpCrudPageBase<IBookAppService, BookDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateBookDto>
+
 
 <Card>
 	<CardHeader>
@@ -36,11 +38,11 @@
 						   ShowPager="true"
 						   PageSize="PageSize">
 			<DataGridColumns>
-				<DataGridColumn TItem="BookDto"
+				@*<DataGridColumn TItem="BookDto"
 								Field="@nameof(BookDto.ShelfName)"
-								Caption="@L["Shelf"]"></DataGridColumn>
+								Caption="@L["Shelf"]"></DataGridColumn>*@
 
-				<DataGridColumn TItem="BookDto"
+@*			<DataGridColumn TItem="BookDto"
 								Field="@nameof(BookDto.AuthorName)"
 								Caption="@L["Author"]"></DataGridColumn>
 
@@ -61,7 +63,7 @@
 						@context.PublishDate.ToShortDateString()
 					</DisplayTemplate>
 				</DataGridColumn>
-				<DataGridColumn TItem="BookDto"
+				@*<DataGridColumn TItem="BookDto"
 								Field="@nameof(BookDto.Price)"
 								Caption="@L["Price"]">
 				</DataGridColumn>
@@ -78,8 +80,8 @@
 					<DisplayTemplate>
 						@L[$"Enum:FloorNumber.{context.Floor}"]
 					</DisplayTemplate>
-				</DataGridColumn>
-				<DataGridColumn TItem="BookDto"
+				</DataGridColumn>*@
+				@*<DataGridColumn TItem="BookDto"
 								Field="@nameof(BookDto.BookStatu)"
 								Caption="@L["Statu"]">
 					<DisplayTemplate>
@@ -137,16 +139,24 @@
 							}
 					</style>
 					</DisplayTemplate>
-				</DataGridColumn>
+				</DataGridColumn>*
 
 			</DataGridColumns>
 		</DataGrid>
 	</CardBody>
-</Card>
+</Card>@
 
 @code {
 
 	public BolumType LibraryName = BolumType.XKütüphanesi;
+
+	public int PageSize { get; } = LimitedResultRequestDto.DefaultMaxResultCount;
+
+	public int CurrentPage { get; set; }
+
+	public string CurrentSorting { get; set; }
+
+	public int TotalCount { get; set; }
 
 	private PagedResultDto<BookDto> books;
 	private string searchText = "";
@@ -157,14 +167,15 @@
 	IReadOnlyList<AuthorLookupDto> authorList = Array.Empty<AuthorLookupDto>();
 	IReadOnlyList<ShelfLookupDto> shelfList = Array.Empty<ShelfLookupDto>();
 
+
 	[AllowAnonymous]
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
-		authorList = (await AppService.GetAuthorLookupAsync()).Items;
-		shelfList = (await AppService.GetShelfLookupAsync()).Items;
+		authorList = (await BookAppService.GetAuthorLookupAsync()).Items;
+		
 
-		await LoadBooksAsync();
+		//await LoadBooksAsync();
 	}
 	[AllowAnonymous]
 	private async Task SearchBooksAsync(ChangeEventArgs e)
@@ -182,13 +193,13 @@
 							book.AuthorName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
 						.ToList(); // Create a filtered copy
 	}
-	[AllowAnonymous]
+	/*[AllowAnonymous]
 	private async Task LoadBooksAsync()
 	{
 		books = await BookAppService.GetBooksByLibraryAsync(LibraryName, new PagedAndSortedResultRequestDto());
 
 		// Sonuçları filtrelenmiş kitap listesine atayın
 		filteredBooks = books.Items;
-	}
+	}*/
 
-}
+}*@

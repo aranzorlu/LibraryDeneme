@@ -7,12 +7,265 @@
 @using Volo.Abp.AspNetCore.Components.Web
 @using LibraryDeneme.Permissions
 @using LibraryDeneme.Blazor.Components
-@inject IStringLocalizer<LibraryDenemeResource> L
+@inherits LibraryDenemeComponentBase
 @inject AbpBlazorMessageLocalizerHelper<LibraryDenemeResource> LH
-@inherits AbpCrudPageBase<IBookAppService, BookDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateBookDto>
+@inject IBookAppService BookAppService
 
-  
 <Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h2>@L["Books"]</h2>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                    @if (CanCreateBook)
+                    {
+                        <Button Color="Color.Primary"
+                                Clicked="OpenCreateBookModal">
+                            @L["NewBooks"]
+                        </Button>
+                    }
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="BookDto"
+                  Data="filteredBooks"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridColumn Width="150px"
+                                TItem="BookDto"
+                                Field="@nameof(BookDto.Id)"
+                                Sortable="false"
+                                Caption="@L["Actions"]">
+                    <DisplayTemplate>
+                        <Dropdown>
+                            <DropdownToggle Color="Color.Primary">
+                                @L["Actions"]
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                @if (CanEditBook)
+                                {
+                                    <DropdownItem Clicked="() => OpenEditBookModal(context)">
+                                        @L["Edit"]
+                                    </DropdownItem>
+                                }
+                                @if (CanDeleteBook)
+                                {
+                                    <DropdownItem Clicked="() => DeleteBookAsync(context)">
+                                        @L["Delete"]
+                                    </DropdownItem>
+                                }
+                            </DropdownMenu>
+                        </Dropdown>
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.AuthorName)"
+                                Caption="@L["Author"]"></DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Name)"
+                                Caption="@L["Name"]"></DataGridColumn>
+                <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.Type)"
+                                Caption="@L["Type"]">
+                    <DisplayTemplate>
+                        @L[$"Enum:BookType.{context.Type}"]
+                    </DisplayTemplate>
+                </DataGridColumn>
+        <DataGridColumn TItem="BookDto"
+                                Field="@nameof(BookDto.PublishDate)"
+                                Caption="@L["PublishDate"]">
+                    <DisplayTemplate>
+                        @context.PublishDate.ToShortDateString()
+                    </DisplayTemplate>
+                </DataGridColumn>
+        
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+<Modal @ref="CreateBookModal">
+    <ModalBackdrop />
+    <ModalContent IsCentered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["NewBook"]</ModalTitle>
+                <CloseButton Clicked="CloseCreateBookModal" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@CreateValidationsRef" Model="@NewBook" ValidateOnLoad="false">
+                    <Validation MessageLocalizer="@LH.Localize">
+                        
+                        <Field>
+                            <FieldLabel>@L["Name"]</FieldLabel>
+                            <TextEdit @bind-Text="@NewBook.Name">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+
+                    </Validation>
+                    <Field>
+                        <FieldLabel>@L["Author"]</FieldLabel>
+                        <Select TValue="Guid" @bind-SelectedValue="@NewBook.AuthorId">
+                            @foreach (var author in authorList)
+                            {
+                                <SelectItem TValue="Guid" Value="@author.Id">
+                                    @author.Name
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["Type"]</FieldLabel>
+                        <Select TValue="BookType" @bind-SelectedValue="@NewBook.Type">
+                            @foreach (int bookTypeValue in Enum.GetValues(typeof(BookType)))
+                            {
+                                <SelectItem TValue="BookType" Value="@((BookType) bookTypeValue)">
+                                    @L[$"Enum:BookType.{bookTypeValue}"]
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                    <Field>
+                        <FieldLabel>@L["PublishDate"]</FieldLabel>
+                        <DateEdit TValue="DateTime" @bind-Date="NewBook.PublishDate" />
+                    </Field>
+                    
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseCreateBookModal">
+                    @L["Cancel"]
+                </Button>
+                <Button Color="Color.Primary"
+                        Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true"
+                        Clicked="CreateBookAsync">
+                    @L["Save"]
+                </Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+<Modal @ref="EditBookModal">
+    <ModalBackdrop />
+    <ModalContent IsCentered="true">
+        <Form>
+            <ModalHeader>
+                        <ModalTitle>@EditingBook.Name</ModalTitle>
+                        <CloseButton Clicked="CloseEditBookModal" />
+                    </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@EditValidationsRef" Model="@EditingBook" ValidateOnLoad="false">
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Name"]</FieldLabel>
+                            <TextEdit @bind-Text="@EditingBook.Name">
+                                <Feedback>
+                                    <ValidationError/>
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Field>
+                        <FieldLabel>@L["Author"]</FieldLabel>
+                        <Select TValue="Guid" @bind-SelectedValue="@EditingBook.AuthorId">
+                            @foreach (var author in authorList)
+                            {
+                                <SelectItem TValue="Guid" Value="@author.Id">
+                                    @author.Name
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                    <Validation>
+                        <Field>
+                            <FieldLabel>@L["Type"]</FieldLabel>
+                            <Select TValue="BookType" @bind-SelectedValue="@EditingBook.Type">
+                                @foreach (int bookTypeValue in Enum.GetValues(typeof(BookType)))
+                                {
+                                    <SelectItem TValue="BookType" Value="@((BookType) bookTypeValue)">
+                                        @L[$"Enum:BookType.{bookTypeValue}"]
+                                    </SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                    </Validation>
+                    <Field>
+                        <FieldLabel>@L["PublishDate"]</FieldLabel>
+                        <DateEdit TValue="DateTime" @bind-Date="EditingBook.PublishDate" />
+                    </Field>
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseEditBookModal">
+                    @L["Cancel"]
+                </Button>
+                <Button Color="Color.Primary"
+                        Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true"
+                        Clicked="UpdateBookAsync">
+                    @L["Save"]
+                </Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+ 
+@code
+{
+
+    private string searchText = "";
+    private IReadOnlyList<BookDto> filteredBooks = Array.Empty<BookDto>();
+
+
+    //ADDED A NEW FIELD
+    IReadOnlyList<AuthorLookupDto> authorList = Array.Empty<AuthorLookupDto>();
+    
+
+
+    
+
+    //GET AUTHORS ON INITIALIZATION
+    
+
+    
+    private async Task SearchBooksAsync(ChangeEventArgs e )
+    {
+        searchText = e.Value.ToString();
+
+        if (string.IsNullOrEmpty(searchText))
+        {
+            // Reset to all books if search text is empty
+            filteredBooks = BookList;
+            return;
+        }
+
+        filteredBooks = BookList.Where(book => book.Name.Contains(searchText, StringComparison.InvariantCultureIgnoreCase) ||
+                            book.AuthorName.Contains(searchText, StringComparison.InvariantCultureIgnoreCase))
+                     .ToList(); // Create a filtered copy
+        
+    }
+        private async Task LoadBooksAsync()
+        {
+            var result = await BookAppService.GetListAsync(new GetBookListDto());
+            BookList = result.Items;
+            filteredBooks = BookList; // Initially show all books
+        }
+}
+
+
+@*<Card>
     <CardHeader>
         <Row Class="justify-content-between">
             <Column ColumnSize="ColumnSize.IsAuto">
@@ -476,4 +729,4 @@
 
     
 
-}
+}*@

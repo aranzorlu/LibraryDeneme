@@ -1,0 +1,50 @@
+﻿@page "/buildings"
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- X Library Card -->
+        <div class="col-md-6">
+            <div class="card text-center">
+                <a href="/xbooks">
+                    <img src="XLibrary.jpg" class="card-img-top" alt="X Kütüphanesi" />
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">X Kütüphanesi</h5>
+                    <p class="card-text">X Kütüphanesindeki kitapları keşfet.</p>
+                    <a href="/xbooks" class="btn btn-primary">X Kütüphanesi Kitapları</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Y Library Card -->
+        <div class="col-md-6">
+            <div class="card text-center">
+                <a href="/ybooks">
+                    <img src="YLibrary.png" class="card-img-top" alt="Y Kütüphanesi" />
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">Y Kütüphanesi</h5>
+                    <p class="card-text">Y Kütüphanesindeki kitapları keşfet.</p>
+                    <a href="/ybooks" class="btn btn-primary">Y Kütüphanesi Kitapları</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card-img-top {
+        height: 250px;
+        object-fit: cover;
+        cursor: pointer;
+    }
+
+    .card-body {
+        background-color: #f8f9fa;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+</style>

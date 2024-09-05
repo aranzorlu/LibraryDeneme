@@ -13,8 +13,8 @@ using Volo.Abp.EntityFrameworkCore;
 namespace LibraryDeneme.Migrations
 {
     [DbContext(typeof(LibraryDenemeDbContext))]
-    [Migration("20240813122620_Added_ShelfId_To_Book")]
-    partial class Added_ShelfId_To_Book
+    [Migration("20240904112913_Added_BookId_To_Inventory")]
+    partial class Added_BookId_To_Inventory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -131,17 +131,11 @@ namespace LibraryDeneme.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ShelfId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -150,9 +144,76 @@ namespace LibraryDeneme.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("ShelfId");
+                    b.HasIndex("Name");
 
                     b.ToTable("AppBooks", (string)null);
+                });
+
+            modelBuilder.Entity("LibraryDeneme.Inventorys.Inventory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Bolum")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("BookId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<string>("ExtraProperties")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<int>("Floor")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("SerialNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("AppInventorys", (string)null);
                 });
 
             modelBuilder.Entity("LibraryDeneme.Shelfs.Shelf", b =>
@@ -201,6 +262,9 @@ namespace LibraryDeneme.Migrations
                     b.Property<Guid?>("LastModifierId")
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("LastModifierId");
+
+                    b.Property<int>("ShelfBolum")
+                        .HasColumnType("int");
 
                     b.Property<string>("ShelfName")
                         .IsRequired()
@@ -2097,10 +2161,13 @@ namespace LibraryDeneme.Migrations
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("LibraryDeneme.Shelfs.Shelf", null)
+            modelBuilder.Entity("LibraryDeneme.Inventorys.Inventory", b =>
+                {
+                    b.HasOne("LibraryDeneme.Books.Book", null)
                         .WithMany()
-                        .HasForeignKey("ShelfId")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

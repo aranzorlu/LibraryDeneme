@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using LibraryDeneme.Authors;
 using LibraryDeneme.Books;
+using LibraryDeneme.Inventorys;
 using LibraryDeneme.Shelfs;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
@@ -12,26 +13,32 @@ namespace LibraryDeneme.Books;
 public class LibraryDenemeDataSeederContributor
     : IDataSeedContributor, ITransientDependency
 {
-    private readonly IRepository<Book, Guid> _bookRepository;
+	private readonly IRepository<Inventory, Guid> _inventoryRepository;
+	private readonly IBookRepository _bookRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly AuthorManager _authorManager;
     private readonly ShelfManager _shelfManager;
     private readonly IShelfRepository _shelfRepository;
+    private readonly BookManager _bookManager;
 
 
     public LibraryDenemeDataSeederContributor(
-        IRepository<Book, Guid> bookRepository,
+        IBookRepository bookRepository,
+        BookManager bookManager,
         IShelfRepository shelfRepository,
         ShelfManager shelfManager,
         IAuthorRepository authorRepository,
-        AuthorManager authorManager)
+        AuthorManager authorManager,
+        IRepository<Inventory,Guid> inventoryRepository
+        )
     {
-
+        _inventoryRepository = inventoryRepository;
         _bookRepository = bookRepository;
         _authorRepository = authorRepository;
         _authorManager = authorManager;
         _shelfManager = shelfManager;
         _shelfRepository = shelfRepository;
+        _bookManager = bookManager;
     }
 
 
@@ -77,37 +84,53 @@ public class LibraryDenemeDataSeederContributor
             )
         );
 
-        await _bookRepository.InsertAsync(
-            new Book
+        var book1984 = await _bookRepository.InsertAsync(
+            await _bookManager.CreateAsync(
+                orwell.Id,
+                "1984",
+                BookType.Dystopia,
+                new DateTime(1949, 6, 8))
+            );
+
+		var bookHitchhiker = await _bookRepository.InsertAsync(
+			await _bookManager.CreateAsync(
+				douglas.Id,
+				"The Hitchhiker's Guide to the Galaxy",
+				BookType.ScienceFiction,
+				new DateTime(1995, 9, 27))
+			);
+
+
+        await _inventoryRepository.InsertAsync(
+            new Inventory
             {
                 ShelfId = a100.Id,
-                AuthorId = orwell.Id, // SET THE AUTHOR
-                Name = "1984",
-                Type = BookType.Dystopia,
-                PublishDate = new DateTime(1949, 6, 8),
-                Price = 19.84f,
+                BookId = book1984.Id,
                 Floor = FloorNumber.Kat1,
                 Bolum = BolumType.XKütüphanesi,
-                BookStatu = StatuType.Active
+                BookStatu = StatuType.Inactive,
+                SerialNo = "9789750718533"
+               
             },
             autoSave: true
-        );
+            );
 
-        await _bookRepository.InsertAsync(
-            new Book
-            {
+		await _inventoryRepository.InsertAsync(
+			new Inventory
+			{
                 ShelfId = a200.Id,
-                AuthorId = douglas.Id, // SET THE AUTHOR
-                Name = "The Hitchhiker's Guide to the Galaxy",
-                Type = BookType.ScienceFiction,
-                PublishDate = new DateTime(1995, 9, 27),
-                Price = 42.0f,
-                Floor = FloorNumber.Kat1,
-                Bolum = BolumType.YKütüphanesi,
-                BookStatu = StatuType.Inactive
-            },
-            autoSave: true
-        );
-    }
+				BookId = bookHitchhiker.Id,
+				Floor = FloorNumber.Kat2,
+				Bolum = BolumType.YKütüphanesi,
+                BookStatu = StatuType.Active,
+				SerialNo = "9789750719387"
+
+			},
+			autoSave: true
+			);
+
+
+
+	}
 }
 

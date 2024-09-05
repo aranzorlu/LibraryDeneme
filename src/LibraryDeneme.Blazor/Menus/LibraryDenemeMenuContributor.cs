@@ -61,7 +61,8 @@ public class LibraryDenemeMenuContributor : IMenuContributor
          new ApplicationMenuItem(
              "BooksStore",
              l["Menu:LibraryDeneme"],
-             icon: "fas fa-building"
+             icon: "fas fa-building",
+             url:"/buildings"
             ).AddItem(
                 new ApplicationMenuItem(
                 "BooksStore.Books",
@@ -131,7 +132,7 @@ public class LibraryDenemeMenuContributor : IMenuContributor
                 "BookStore.Shelfs",
                 l["Menu:Shelfs"],
                 url: "/shelfs",
-                icon:"fas fa-bookmark")
+                icon:"fas fa-archive")
                 );
         }
         if (await context.IsGrantedAsync(LibraryDenemePermissions.Books.Default))
@@ -143,7 +144,14 @@ public class LibraryDenemeMenuContributor : IMenuContributor
                 icon:"fas fa-book")
                 );
         }
-	
-	}
+        context.Menu.AddItem(new ApplicationMenuItem(
+                "BookStore.Inventory",
+                l["Menu:Inventory"],
+                url: "/inventorys",
+                icon:"fas fa-box"
+                )
+                );
+
+    }
 
 }

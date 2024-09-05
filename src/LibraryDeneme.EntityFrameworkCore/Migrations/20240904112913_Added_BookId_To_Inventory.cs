@@ -6,28 +6,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LibraryDeneme.Migrations
 {
     /// <inheritdoc />
-    public partial class Added_ShelfId_To_Book : Migration
+    public partial class Added_BookId_To_Inventory : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<Guid>(
-                name: "ShelfId",
-                table: "AppBooks",
+                name: "BookId",
+                table: "AppInventorys",
                 type: "uniqueidentifier",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.CreateIndex(
-                name: "IX_AppBooks_ShelfId",
-                table: "AppBooks",
-                column: "ShelfId");
+                name: "IX_AppInventorys_BookId",
+                table: "AppInventorys",
+                column: "BookId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AppBooks_AppShelfs_ShelfId",
-                table: "AppBooks",
-                column: "ShelfId",
-                principalTable: "AppShelfs",
+                name: "FK_AppInventorys_AppBooks_BookId",
+                table: "AppInventorys",
+                column: "BookId",
+                principalTable: "AppBooks",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -36,16 +36,16 @@ namespace LibraryDeneme.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_AppBooks_AppShelfs_ShelfId",
-                table: "AppBooks");
+                name: "FK_AppInventorys_AppBooks_BookId",
+                table: "AppInventorys");
 
             migrationBuilder.DropIndex(
-                name: "IX_AppBooks_ShelfId",
-                table: "AppBooks");
+                name: "IX_AppInventorys_BookId",
+                table: "AppInventorys");
 
             migrationBuilder.DropColumn(
-                name: "ShelfId",
-                table: "AppBooks");
+                name: "BookId",
+                table: "AppInventorys");
         }
     }
 }

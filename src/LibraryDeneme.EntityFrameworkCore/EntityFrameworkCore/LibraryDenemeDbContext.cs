@@ -17,6 +17,8 @@ using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
 using LibraryDeneme.Authors;
 using LibraryDeneme.Shelfs;
+using LibraryDeneme.Inventorys;
+
 
 namespace LibraryDeneme.EntityFrameworkCore;
 
@@ -35,6 +37,8 @@ public class LibraryDenemeDbContext :
     public DbSet<Author> Authors { get; set; }
 
     public DbSet<Shelf> Shelfs { get; set; }
+
+    public DbSet<Inventory> Inventorys { get; set; }
 
     #region Entities from the modules
 
@@ -92,9 +96,11 @@ public class LibraryDenemeDbContext :
             b.ToTable(LibraryDenemeConsts.DbTablePrefix + "Books",
                 LibraryDenemeConsts.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
-            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+            b.Property(x => x.Name).IsRequired().HasMaxLength(AuthorConsts.MaxNameLength);
             b.HasOne<Author>().WithMany().HasForeignKey(x => x.AuthorId).IsRequired();
-            b.HasOne<Shelf>().WithMany().HasForeignKey(x => x.ShelfId).IsRequired();
+
+            b.HasIndex(x => x.Name);
+            
 
         });
 
@@ -118,6 +124,15 @@ public class LibraryDenemeDbContext :
             b.ConfigureByConvention();
             b.Property(x => x.ShelfName).IsRequired().HasMaxLength(ShelfConsts.MaxShelfNameLength);
             b.HasIndex(x => x.ShelfName);
+        });
+        builder.Entity<Inventory>(b =>
+        {
+            b.ToTable(LibraryDenemeConsts.DbTablePrefix + "Inventorys",
+                LibraryDenemeConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.Property(x => x.SerialNo).IsRequired();
+			b.HasOne<Book>().WithMany().HasForeignKey(x => x.BookId).IsRequired();
+            b.HasOne<Shelf>().WithMany().HasForeignKey(x => x.ShelfId).IsRequired();
         });
     }
     }

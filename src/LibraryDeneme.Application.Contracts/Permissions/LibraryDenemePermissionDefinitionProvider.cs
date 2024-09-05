@@ -31,6 +31,12 @@ public class LibraryDenemePermissionDefinitionProvider : PermissionDefinitionPro
         shelfsPermission.AddChild(LibraryDenemePermissions.Shelfs.Edit, L("Permission:Shelfs.Edit"));
         shelfsPermission.AddChild(LibraryDenemePermissions.Shelfs.Delete, L("Permission:Shelfs.Delete"));
 
+
+        var inventorysPermission = myGroup.AddPermission(LibraryDenemePermissions.Inventorys.Default, L("Permission:Inventorys"));
+        inventorysPermission.AddChild(LibraryDenemePermissions.Inventorys.Create, L("Permission:Inventorys.Create"));
+        inventorysPermission.AddChild(LibraryDenemePermissions.Inventorys.Edit, L("Permission:Inventorys.Edit"));
+        inventorysPermission.AddChild(LibraryDenemePermissions.Inventorys.Delete, L("Permission:Inventorys.Delete"));
+
         //Define your own permissions here. Example:
         //myGroup.AddPermission(LibraryDenemePermissions.MyPermission1, L("Permission:MyPermission1"));
     }
